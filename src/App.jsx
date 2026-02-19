@@ -164,22 +164,28 @@ function App() {
 
   const stores = [
     {
-      branch: 'NutriVerse Central Market',
-      address: 'Shop 14, Central Market Road, Main City',
+      branch: 'NutriVerse Mumbai',
+      address: 'Shop 5, Bandra Kurla Complex, Mumbai - 400051',
       hours: '10:00 AM – 9:30 PM',
-      phone: '+91 98XX-111-321',
+      phone: '+91 98234-111-321',
     },
     {
-      branch: 'NutriVerse Riverside',
-      address: 'Unit 7, Riverside Plaza, West Avenue',
+      branch: 'NutriVerse Bangalore',
+      address: 'Unit 8, MG Road, Bangalore - 560001',
       hours: '9:30 AM – 9:00 PM',
-      phone: '+91 98XX-222-654',
+      phone: '+91 98456-222-654',
     },
     {
-      branch: 'NutriVerse Green Park',
-      address: 'Kiosk 3, Green Park Mall, South District',
+      branch: 'NutriVerse Delhi',
+      address: 'Shop 12, Connaught Place, New Delhi - 110001',
       hours: '11:00 AM – 10:00 PM',
-      phone: '+91 98XX-333-987',
+      phone: '+91 98567-333-987',
+    },
+    {
+      branch: 'NutriVerse Hyderabad',
+      address: 'Kiosk 7, HITEC City, Hyderabad - 500081',
+      hours: '10:00 AM – 9:00 PM',
+      phone: '+91 98789-444-256',
     },
   ]
 
@@ -189,8 +195,6 @@ function App() {
       [productName]: quantity,
     }))
   }
-
-  const [currentFeedbackIndex, setCurrentFeedbackIndex] = useState(0)
 
   const customerFeedback = [
     {
@@ -221,22 +225,31 @@ function App() {
       name: 'Vikram Singh',
       product: 'Afghan Raisins',
       rating: 5,
-      note: 'Naturally sweet and no added sugar. Perfect for my family.',
+      note: 'Sweet and succulent. Perfect for my morning cereal and baking needs.',
     },
     {
-      name: 'Anjali Mehta',
+      name: 'Anjali Desai',
       product: 'Royal Dryfruit Mix',
       rating: 5,
-      note: 'Amazing blend of premium nuts. Great for gifting to loved ones.',
+      note: 'The perfect mix for my health-conscious family. Highly satisfied with the order.',
     },
   ]
+  const [feedbackStartIndex, setFeedbackStartIndex] = useState(0)
+  const feedbacksPerView = 4
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentFeedbackIndex((current) => (current + 1) % customerFeedback.length)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [customerFeedback.length])
+  const handlePrevFeedback = () => {
+    setFeedbackStartIndex((current) => 
+      current === 0 ? Math.max(0, customerFeedback.length - feedbacksPerView) : current - 1
+    )
+  }
+
+  const handleNextFeedback = () => {
+    setFeedbackStartIndex((current) => 
+      current + feedbacksPerView >= customerFeedback.length ? 0 : current + 1
+    )
+  }
+
+  const visibleFeedbacks = customerFeedback.slice(feedbackStartIndex, feedbackStartIndex + feedbacksPerView)
 
   const serviceHighlights = [
     {
@@ -287,6 +300,13 @@ function App() {
       }}
     >
       <div className="page">
+        <div className="logo-container">
+          <div className="logo-box">
+            <p className="logo-text">N<span className="logo-accent">V</span></p>
+          </div>
+          <p className="tagline">Naturally Wholesome • Premium Dryfruits</p>
+        </div>
+
         <div className="top-row">
           <nav className="top-tabs" aria-label="Primary navigation">
             {tabs.map((tab) => (
@@ -445,9 +465,9 @@ function App() {
               aria-label="WhatsApp bulk order"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20 11.8c0 4.7-3.8 8.5-8.5 8.5-1.5 0-2.9-.4-4.1-1.1L3 20.5l1.4-4.2a8.5 8.5 0 1 1 15.6-4.5Zm-8.5-7a7 7 0 0 0-6.1 10.5l.3.5-.8 2.4 2.5-.8.5.3a7 7 0 1 0 3.6-13Zm3.9 8.9c-.2-.1-1.1-.6-1.2-.7-.2-.1-.3-.1-.4.1-.1.2-.5.7-.6.9-.1.1-.2.2-.4.1-.9-.4-1.6-.9-2.2-1.8-.2-.3.2-.3.6-1.1.1-.1 0-.3 0-.4 0-.1-.4-1-.6-1.4-.2-.3-.3-.3-.4-.3h-.4c-.1 0-.4.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2.9 2.3.1.2 1.6 2.5 4 3.4 1.5.6 2.1.7 2.8.6.4-.1 1.1-.5 1.3-1 .2-.6.2-1 .1-1.1-.1-.1-.2-.1-.4-.2Z" />
+                <path d="M17.6 6.3C15.8 4.6 13.5 3.6 11 3.6 6.6 3.6 3 7.2 3 11.6c0 1.6.5 3.1 1.3 4.4L3 21l4.7-1.2c1.2.7 2.6 1.1 4.1 1.1 4.4 0 8-3.6 8-8s-3.6-8-8-8zm0 14.4c-1.1 0-2.2-.3-3.1-.8l-.2-.1-2.3.6.6-2.2-.2-.3c-.6-1-1-2.2-1-3.5 0-3.6 3-6.6 6.6-6.6 1.8 0 3.4.7 4.6 2 1.2 1.2 1.9 2.8 1.9 4.6 0 3.6-3 6.6-6.6 6.6zm3.2-4.9c-.2-.1-1-.5-1.2-.6-.2 0-.3 0-.5.1-.1.1-.5.6-.6.7-.1.1-.2.1-.4 0-.8-.4-1.5-.8-2.1-1.5-.2-.3.2-.3.6-1 .1-.1 0-.3 0-.4 0-.1-.4-.9-.6-1.3-.1-.3-.3-.3-.4-.3h-.4c-.1 0-.4.1-.6.3-.2.2-.7.7-.7 1.8 0 1 .7 2.1.8 2.2.1.2 1.5 2.4 3.8 3.2 1.5.6 2 .6 2.7.5.4 0 1-.4 1.2-.9.2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z" />
               </svg>
-              Message on WhatsApp (Dummy)
+              Message on WhatsApp
             </a>
           </div>
         </div>
@@ -489,13 +509,23 @@ function App() {
               <p className="eyebrow">Customer Feedback</p>
               <h2>Positive Ratings Across Products and Services</h2>
             </div>
-            <div className="feedback-carousel">
-              <article className="feedback-item">
-                <p className="customer-name">— {customerFeedback[currentFeedbackIndex].name}</p>
-                <h4>{customerFeedback[currentFeedbackIndex].product}</h4>
-                <p className="stars">{'★'.repeat(customerFeedback[currentFeedbackIndex].rating)}{'☆'.repeat(5 - customerFeedback[currentFeedbackIndex].rating)}</p>
-                <p className="feedback-note">{customerFeedback[currentFeedbackIndex].note}</p>
-              </article>
+            <div className="feedback-slider-container">
+              <button className="slider-arrow left" onClick={handlePrevFeedback} aria-label="Previous feedback">
+                ❮
+              </button>
+              <div className="feedback-grid-slider">
+                {visibleFeedbacks.map((item) => (
+                  <article className="card feedback-card" key={item.name}>
+                    <h4>{item.product}</h4>
+                    <p className="customer-name">— {item.name}</p>
+                    <p className="stars">{'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}</p>
+                    <p className="feedback-note">{item.note}</p>
+                  </article>
+                ))}
+              </div>
+              <button className="slider-arrow right" onClick={handleNextFeedback} aria-label="Next feedback">
+                ❯
+              </button>
             </div>
           </section>
 
