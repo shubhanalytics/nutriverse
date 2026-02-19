@@ -478,14 +478,15 @@ function App() {
             <a className="action-link" href="tel:+9198XXXX4321">Call: +91 98XX-XX-4321</a>
             <a
               className="action-link whatsapp-link"
-              href="#"
-              onClick={preventNavigation}
+              href="https://wa.me/919800000000?text=Hello%2C%20I%27m%20interested%20in%20bulk%20orders%20from%20NutriVerse"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="WhatsApp bulk order"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M17.6 6.3C15.8 4.6 13.5 3.6 11 3.6 6.6 3.6 3 7.2 3 11.6c0 1.6.5 3.1 1.3 4.4L3 21l4.7-1.2c1.2.7 2.6 1.1 4.1 1.1 4.4 0 8-3.6 8-8s-3.6-8-8-8zm0 14.4c-1.1 0-2.2-.3-3.1-.8l-.2-.1-2.3.6.6-2.2-.2-.3c-.6-1-1-2.2-1-3.5 0-3.6 3-6.6 6.6-6.6 1.8 0 3.4.7 4.6 2 1.2 1.2 1.9 2.8 1.9 4.6 0 3.6-3 6.6-6.6 6.6zm3.2-4.9c-.2-.1-1-.5-1.2-.6-.2 0-.3 0-.5.1-.1.1-.5.6-.6.7-.1.1-.2.1-.4 0-.8-.4-1.5-.8-2.1-1.5-.2-.3.2-.3.6-1 .1-.1 0-.3 0-.4 0-.1-.4-.9-.6-1.3-.1-.3-.3-.3-.4-.3h-.4c-.1 0-.4.1-.6.3-.2.2-.7.7-.7 1.8 0 1 .7 2.1.8 2.2.1.2 1.5 2.4 3.8 3.2 1.5.6 2 .6 2.7.5.4 0 1-.4 1.2-.9.2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z" />
               </svg>
-              Message on WhatsApp
+              WhatsApp
             </a>
           </div>
         </div>
