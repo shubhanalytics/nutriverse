@@ -91,7 +91,7 @@ function App() {
     {
       name: 'California Almonds',
       details: 'Protein-rich crunchy almonds for daily snacking and breakfast.',
-      image: '/assets/almonds.jpg',
+      image: '/nutriverse/assets/almonds.jpg',
       pricing: {
         '250g': '₹260',
         '500g': '₹500',
@@ -102,7 +102,7 @@ function App() {
     {
       name: 'Premium Cashews',
       details: 'W240 and W320 grade handpicked whole cashews.',
-      image: '/assets/cashews.jpg',
+      image: '/nutriverse/assets/cashews.jpg',
       pricing: {
         '250g': '₹320',
         '500g': '₹620',
@@ -113,7 +113,7 @@ function App() {
     {
       name: 'Roasted Pistachios',
       details: 'Salted premium pistachios with natural flavor and crunch.',
-      image: '/assets/pistachios.jpg',
+      image: '/nutriverse/assets/pistachios.jpg',
       pricing: {
         '250g': '₹380',
         '500g': '₹740',
@@ -124,7 +124,7 @@ function App() {
     {
       name: 'Walnut Kernels',
       details: 'Omega-rich walnut halves ideal for smoothies and salads.',
-      image: '/assets/walnuts.jpg',
+      image: '/nutriverse/assets/walnuts.jpg',
       pricing: {
         '250g': '₹290',
         '500g': '₹560',
@@ -135,7 +135,7 @@ function App() {
     {
       name: 'Afghan Raisins',
       details: 'Naturally sweet seedless raisins for desserts and snacking.',
-      image: '/assets/raisins.jpg',
+      image: '/nutriverse/assets/raisins.jpg',
       pricing: {
         '250g': '₹180',
         '500g': '₹340',
@@ -146,7 +146,7 @@ function App() {
     {
       name: 'Premium Dates',
       details: 'Rich and creamy premium dates packed with natural sweetness and nutrients.',
-      image: '/assets/dates.jpg',
+      image: '/nutriverse/assets/dates.jpg',
       pricing: {
         '250g': '₹220',
         '500g': '₹420',
@@ -157,7 +157,7 @@ function App() {
     {
       name: 'Fresh Figs',
       details: 'Dried figs with natural sweetness, perfect for snacking and cooking.',
-      image: '/assets/figs.jpg',
+      image: '/nutriverse/assets/figs.jpg',
       pricing: {
         '250g': '₹240',
         '500g': '₹460',
