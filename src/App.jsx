@@ -478,7 +478,7 @@ function App() {
             <a className="action-link" href="tel:+9198XXXX4321">Call: +91 98XX-XX-4321</a>
             <a
               className="action-link whatsapp-link"
-              href="https://wa.me/919800000000?text=Hello%2C%20I%27m%20interested%20in%20bulk%20orders%20from%20NutriVerse"
+              href="https://wa.me/919926494791?text=Hello%2C%20I%27m%20interested%20in%20bulk%20orders%20from%20NutriVerse"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp bulk order"
