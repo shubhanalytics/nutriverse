@@ -276,7 +276,7 @@ button {
 .location-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 0.9rem;
 }
 
@@ -294,13 +294,20 @@ button {
   flex-direction: column;
   overflow: hidden;
   padding: 0;
+  transition: transform 250ms ease, box-shadow 250ms ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(244, 213, 161, 0.15);
 }
 
 .product-image {
   width: 100%;
-  height: 220px;
+  height: 240px;
   object-fit: cover;
   display: block;
+  background: linear-gradient(135deg, #2a2218, #1a1813);
 }
 
 .product-card h4,

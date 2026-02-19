@@ -91,7 +91,7 @@ function App() {
     {
       name: 'California Almonds',
       details: 'Protein-rich crunchy almonds for daily snacking and breakfast.',
-      image: 'https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.3',
       pricing: {
         '250g': '₹260',
         '500g': '₹500',
@@ -102,7 +102,7 @@ function App() {
     {
       name: 'Premium Cashews',
       details: 'W240 and W320 grade handpicked whole cashews.',
-      image: 'https://images.unsplash.com/photo-1599599810765-a8c95e8d8962?auto=format&fit=crop&w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.4',
       pricing: {
         '250g': '₹320',
         '500g': '₹620',
@@ -113,7 +113,7 @@ function App() {
     {
       name: 'Roasted Pistachios',
       details: 'Salted premium pistachios with natural flavor and crunch.',
-      image: 'https://images.unsplash.com/photo-1599599810962-a8c9e8a0d3d0?auto=format&fit=crop&w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.4&fp-y=0.5',
       pricing: {
         '250g': '₹380',
         '500g': '₹740',
@@ -124,7 +124,7 @@ function App() {
     {
       name: 'Walnut Kernels',
       details: 'Omega-rich walnut halves ideal for smoothies and salads.',
-      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.6&fp-y=0.4',
       pricing: {
         '250g': '₹290',
         '500g': '₹560',
@@ -135,7 +135,7 @@ function App() {
     {
       name: 'Afghan Raisins',
       details: 'Naturally sweet seedless raisins for desserts and snacking.',
-      image: 'https://images.unsplash.com/photo-1585518505116-4a88e8d5f5c5?auto=format&fit=crop&w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1599599810362-4e7f0c9e0f0a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.5',
       pricing: {
         '250g': '₹180',
         '500g': '₹340',
@@ -146,7 +146,7 @@ function App() {
     {
       name: 'Royal Dryfruit Mix',
       details: 'Balanced premium blend of almonds, cashews, pistachios, and raisins.',
-      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1599599810362-4e7f0c9e0f0a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.3',
       pricing: {
         '250g': '₹340',
         '500g': '₹660',
