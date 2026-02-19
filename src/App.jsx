@@ -91,7 +91,7 @@ function App() {
     {
       name: 'California Almonds',
       details: 'Protein-rich crunchy almonds for daily snacking and breakfast.',
-      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.3',
+      image: '/assets/almonds.jpg',
       pricing: {
         '250g': '₹260',
         '500g': '₹500',
@@ -102,7 +102,7 @@ function App() {
     {
       name: 'Premium Cashews',
       details: 'W240 and W320 grade handpicked whole cashews.',
-      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.4',
+      image: '/assets/cashews.jpg',
       pricing: {
         '250g': '₹320',
         '500g': '₹620',
@@ -113,7 +113,7 @@ function App() {
     {
       name: 'Roasted Pistachios',
       details: 'Salted premium pistachios with natural flavor and crunch.',
-      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.4&fp-y=0.5',
+      image: '/assets/pistachios.jpg',
       pricing: {
         '250g': '₹380',
         '500g': '₹740',
@@ -124,7 +124,7 @@ function App() {
     {
       name: 'Walnut Kernels',
       details: 'Omega-rich walnut halves ideal for smoothies and salads.',
-      image: 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.6&fp-y=0.4',
+      image: '/assets/walnuts.jpg',
       pricing: {
         '250g': '₹290',
         '500g': '₹560',
@@ -135,7 +135,7 @@ function App() {
     {
       name: 'Afghan Raisins',
       details: 'Naturally sweet seedless raisins for desserts and snacking.',
-      image: 'https://images.unsplash.com/photo-1599599810362-4e7f0c9e0f0a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.5',
+      image: '/assets/raisins.jpg',
       pricing: {
         '250g': '₹180',
         '500g': '₹340',
@@ -144,14 +144,25 @@ function App() {
       },
     },
     {
-      name: 'Royal Dryfruit Mix',
-      details: 'Balanced premium blend of almonds, cashews, pistachios, and raisins.',
-      image: 'https://images.unsplash.com/photo-1599599810362-4e7f0c9e0f0a?auto=format&fit=crop&w=500&q=85&crop=focalpoint&fp-x=0.5&fp-y=0.3',
+      name: 'Premium Dates',
+      details: 'Rich and creamy premium dates packed with natural sweetness and nutrients.',
+      image: '/assets/dates.jpg',
       pricing: {
-        '250g': '₹340',
-        '500g': '₹660',
-        '1kg': '₹1280',
-        bulk: '₹1180/kg (Bulk Quote)',
+        '250g': '₹220',
+        '500g': '₹420',
+        '1kg': '₹800',
+        bulk: '₹750/kg (Bulk Quote)',
+      },
+    },
+    {
+      name: 'Fresh Figs',
+      details: 'Dried figs with natural sweetness, perfect for snacking and cooking.',
+      image: '/assets/figs.jpg',
+      pricing: {
+        '250g': '₹240',
+        '500g': '₹460',
+        '1kg': '₹880',
+        bulk: '₹820/kg (Bulk Quote)',
       },
     },
   ]
@@ -235,9 +246,9 @@ function App() {
     },
     {
       name: 'Anjali Desai',
-      product: 'Royal Dryfruit Mix',
+      product: 'Premium Dates',
       rating: 5,
-      note: 'The perfect mix for my health-conscious family. Highly satisfied with the order.',
+      note: 'Naturally sweet and delicious. Perfect for my health-conscious family. Highly satisfied with the order.',
     },
   ]
   const [feedbackStartIndex, setFeedbackStartIndex] = useState(0)
