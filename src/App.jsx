@@ -1,5 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './index.css'
+
+const sectionBackgrounds = {
+  home: 'https://images.unsplash.com/photo-1585518419759-34c89fcf87b9?auto=format&fit=crop&w=1800&q=80',
+  'about-us': 'https://images.unsplash.com/photo-1543181286-5f5e3d8e1f4b?auto=format&fit=crop&w=1800&q=80',
+  products: 'https://images.unsplash.com/photo-1585518419759-34c89fcf87b9?auto=format&fit=crop&w=1800&q=80',
+  'bulk-order': 'https://images.unsplash.com/photo-1577003349829-8d7b4557e8c5?auto=format&fit=crop&w=1800&q=80',
+  locations: 'https://images.unsplash.com/photo-1577003349829-8d7b4557e8c5?auto=format&fit=crop&w=1800&q=80',
+  'contact-us': 'https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=1800&q=80',
+}
 
 function App() {
   const preventNavigation = (event) => {
@@ -15,16 +24,21 @@ function App() {
     { label: 'Contact Us', sectionId: 'contact-us' },
   ]
 
-  const sectionBackgrounds = {
-    home: 'https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&w=1800&q=80',
-    'about-us': 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?auto=format&fit=crop&w=1800&q=80',
-    products: 'https://images.unsplash.com/photo-1502741126161-b048400d49f3?auto=format&fit=crop&w=1800&q=80',
-    'bulk-order': 'https://images.unsplash.com/photo-1458014854819-1a40aa70211c?auto=format&fit=crop&w=1800&q=80',
-    locations: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=1800&q=80',
-    'contact-us': 'https://images.unsplash.com/photo-1505682634904-d7c0753cc0ac?auto=format&fit=crop&w=1800&q=80',
-  }
-
   const [activeSection, setActiveSection] = useState('home')
+  const [loadedBackgrounds, setLoadedBackgrounds] = useState({})
+
+  useEffect(() => {
+    Object.entries(sectionBackgrounds).forEach(([key, url]) => {
+      const image = new Image()
+      image.src = url
+      image.onload = () => {
+        setLoadedBackgrounds((current) => ({
+          ...current,
+          [key]: true,
+        }))
+      }
+    })
+  }, [])
 
   const socialLinks = [
     {
@@ -232,11 +246,17 @@ function App() {
     },
   ]
 
+  const activeBackground = sectionBackgrounds[activeSection] || sectionBackgrounds.home
+  const backgroundStyle = loadedBackgrounds[activeSection]
+    ? `linear-gradient(120deg, rgba(15, 12, 8, 0.86), rgba(34, 26, 15, 0.68)), url(${activeBackground})`
+    : 'linear-gradient(120deg, rgba(15, 12, 8, 0.92), rgba(34, 26, 15, 0.8))'
+
   return (
     <div
       className="site-shell"
       style={{
-        backgroundImage: `linear-gradient(120deg, rgba(15, 12, 8, 0.86), rgba(34, 26, 15, 0.68)), url(${sectionBackgrounds[activeSection]})`,
+        backgroundImage: backgroundStyle,
+        backgroundColor: '#13120f',
       }}
     >
       <div className="page">
