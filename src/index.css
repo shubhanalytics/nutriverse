@@ -28,7 +28,9 @@ body {
   min-height: 100vh;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
+  background-color: #13120f;
   transition: background-image 280ms ease;
 }
 
@@ -286,10 +288,20 @@ h2 {
   padding: 0.5rem 0.65rem;
 }
 
+.quantity-select option {
+  background: #1b1813;
+  color: #f7f0e4;
+}
+
 .shop-price {
   margin-top: 0.7rem !important;
-  color: #f4d5a1 !important;
+  color: #fff2d4 !important;
   font-weight: 700;
+  display: inline-block;
+  padding: 0.35rem 0.65rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.32);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
 }
 
 .quality {
