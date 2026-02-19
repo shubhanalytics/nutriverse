@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './index.css'
 
-const dryfruitsImage = 'https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=1920&q=90'
+const dryfruitsImage = 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=1920&q=90'
 
 const sectionBackgrounds = {
   home: dryfruitsImage,

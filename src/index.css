@@ -289,6 +289,12 @@ button {
   backdrop-filter: blur(2px);
 }
 
+.feedback-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
 h3,
 h4 {
   margin: 0;
@@ -472,6 +478,7 @@ h2 {
   color: #efe6d8;
   font-size: 0.98rem;
   line-height: 1.6;
+  flex-grow: 1;
 }
 
 @keyframes fadeInOut {
