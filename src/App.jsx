@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import './index.css'
 
+const dryfruitsImage = 'https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=1920&q=90'
+
 const sectionBackgrounds = {
-  home: 'https://images.unsplash.com/photo-1585518419759-34c89fcf87b9?auto=format&fit=crop&w=1800&q=80',
-  'about-us': 'https://images.unsplash.com/photo-1543181286-5f5e3d8e1f4b?auto=format&fit=crop&w=1800&q=80',
-  products: 'https://images.unsplash.com/photo-1585518419759-34c89fcf87b9?auto=format&fit=crop&w=1800&q=80',
-  'bulk-order': 'https://images.unsplash.com/photo-1577003349829-8d7b4557e8c5?auto=format&fit=crop&w=1800&q=80',
-  locations: 'https://images.unsplash.com/photo-1577003349829-8d7b4557e8c5?auto=format&fit=crop&w=1800&q=80',
-  'contact-us': 'https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=1800&q=80',
+  home: dryfruitsImage,
+  'about-us': dryfruitsImage,
+  products: dryfruitsImage,
+  'bulk-order': dryfruitsImage,
+  locations: dryfruitsImage,
+  'contact-us': dryfruitsImage,
 }
 
 function App() {
