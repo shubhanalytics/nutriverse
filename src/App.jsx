@@ -16,12 +16,12 @@ function App() {
   ]
 
   const sectionBackgrounds = {
-    home: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1800&q=80',
-    'about-us': 'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=1800&q=80',
-    products: 'https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=1800&q=80',
-    'bulk-order': 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=1800&q=80',
-    locations: 'https://images.unsplash.com/photo-1532635223-478243a4f9c2?auto=format&fit=crop&w=1800&q=80',
-    'contact-us': 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1800&q=80',
+    home: 'https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&w=1800&q=80',
+    'about-us': 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?auto=format&fit=crop&w=1800&q=80',
+    products: 'https://images.unsplash.com/photo-1502741126161-b048400d49f3?auto=format&fit=crop&w=1800&q=80',
+    'bulk-order': 'https://images.unsplash.com/photo-1458014854819-1a40aa70211c?auto=format&fit=crop&w=1800&q=80',
+    locations: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=1800&q=80',
+    'contact-us': 'https://images.unsplash.com/photo-1505682634904-d7c0753cc0ac?auto=format&fit=crop&w=1800&q=80',
   }
 
   const [activeSection, setActiveSection] = useState('home')
@@ -331,6 +331,18 @@ function App() {
         </article>
         </section>
 
+        <section className="quality section-gap">
+        <div className="section-header">
+          <p className="eyebrow">Quality Assurance</p>
+          <h2>Safety, Freshness, and Trust in Every Pack</h2>
+        </div>
+        <ul className="quality-list">
+          {qualityPoints.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+        </section>
+
         <section className="section-gap" id="products">
         <div className="section-header">
           <p className="eyebrow">Shop</p>
@@ -365,18 +377,6 @@ function App() {
             </article>
           ))}
         </div>
-        </section>
-
-        <section className="quality section-gap">
-        <div className="section-header">
-          <p className="eyebrow">Quality Assurance</p>
-          <h2>Safety, Freshness, and Trust in Every Pack</h2>
-        </div>
-        <ul className="quality-list">
-          {qualityPoints.map((point) => (
-            <li key={point}>{point}</li>
-          ))}
-        </ul>
         </section>
 
         <section className="section-gap" id="bulk-order">
