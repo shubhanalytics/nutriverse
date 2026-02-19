@@ -190,28 +190,53 @@ function App() {
     }))
   }
 
+  const [currentFeedbackIndex, setCurrentFeedbackIndex] = useState(0)
+
   const customerFeedback = [
     {
-      category: 'California Almonds',
+      name: 'Rajesh Kumar',
+      product: 'California Almonds',
       rating: 5,
       note: 'Super fresh and crunchy. Best quality I have ordered this season.',
     },
     {
-      category: 'Premium Cashews',
+      name: 'Priya Sharma',
+      product: 'Premium Cashews',
       rating: 5,
       note: 'Uniform size and rich taste. Packaging was clean and premium.',
     },
     {
-      category: 'Bulk Order Service',
-      rating: 4,
-      note: 'Quick coordination and on-time dispatch for our office gifting.',
+      name: 'Arjun Patel',
+      product: 'Roasted Pistachios',
+      rating: 5,
+      note: 'Excellent flavor and perfect crunch. Highly recommended for daily snacking.',
     },
     {
-      category: 'Overall Store Experience',
+      name: 'Sneha Gupta',
+      product: 'Walnut Kernels',
+      rating: 4,
+      note: 'Great quality nuts perfect for my smoothies. Will order again soon.',
+    },
+    {
+      name: 'Vikram Singh',
+      product: 'Afghan Raisins',
       rating: 5,
-      note: 'Helpful staff, fair pricing, and excellent product consistency.',
+      note: 'Naturally sweet and no added sugar. Perfect for my family.',
+    },
+    {
+      name: 'Anjali Mehta',
+      product: 'Royal Dryfruit Mix',
+      rating: 5,
+      note: 'Amazing blend of premium nuts. Great for gifting to loved ones.',
     },
   ]
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentFeedbackIndex((current) => (current + 1) % customerFeedback.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [customerFeedback.length])
 
   const serviceHighlights = [
     {
@@ -464,14 +489,13 @@ function App() {
               <p className="eyebrow">Customer Feedback</p>
               <h2>Positive Ratings Across Products and Services</h2>
             </div>
-            <div className="feedback-grid">
-              {customerFeedback.map((item) => (
-                <article className="card" key={item.category}>
-                  <h4>{item.category}</h4>
-                  <p className="stars">{'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}</p>
-                  <p>{item.note}</p>
-                </article>
-              ))}
+            <div className="feedback-carousel">
+              <article className="feedback-item">
+                <p className="customer-name">— {customerFeedback[currentFeedbackIndex].name}</p>
+                <h4>{customerFeedback[currentFeedbackIndex].product}</h4>
+                <p className="stars">{'★'.repeat(customerFeedback[currentFeedbackIndex].rating)}{'☆'.repeat(5 - customerFeedback[currentFeedbackIndex].rating)}</p>
+                <p className="feedback-note">{customerFeedback[currentFeedbackIndex].note}</p>
+              </article>
             </div>
           </section>
 

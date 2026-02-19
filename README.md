@@ -1,11 +1,18 @@
-# React + Vite
+# NutriVerse - Premium Dryfruits Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Website:** https://shubhanalytics.github.io/nutriverse/
 
-Currently, two official plugins are available:
+A modern, responsive e-commerce website for premium dryfruits including almonds, cashews, walnuts, pistachios, and custom gift boxes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+
+- Sticky navigation with smooth tab-based scrolling
+- Dynamic product pricing with quantity selection
+- Bulk order contact section with WhatsApp integration
+- Auto-scrolling customer feedback carousel
+- Service highlights with icons
+- GitHub Pages deployment
+- Built with React + Vite for fast performance
 
 ## React Compiler
 

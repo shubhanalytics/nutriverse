@@ -378,6 +378,57 @@ h2 {
   fill: currentColor;
 }
 
+.feedback-carousel {
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.9rem;
+  min-height: 180px;
+}
+
+.feedback-item {
+  border-radius: 20px;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  animation: fadeInOut 5s ease-in-out infinite;
+}
+
+.customer-name {
+  margin: 0 0 0.35rem 0;
+  color: #f4d5a1;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.feedback-item h4 {
+  margin: 0.35rem 0 0.5rem 0;
+  color: #f8efdf;
+}
+
+.feedback-note {
+  margin: 0.7rem 0 0 0;
+  color: #efe6d8;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
 .site-footer {
   margin-top: 2rem;
   padding-top: 0.25rem;
