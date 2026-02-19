@@ -1,6 +1,49 @@
 import './index.css'
 
 function App() {
+  const preventNavigation = (event) => {
+    event.preventDefault()
+  }
+
+  const tabs = [
+    { label: 'Home', sectionId: 'home' },
+    { label: 'About Us', sectionId: 'about-us' },
+    { label: 'Shop', sectionId: 'products' },
+    { label: 'Bulk Order', sectionId: 'bulk-order' },
+    { label: 'Locations', sectionId: 'locations' },
+    { label: 'Contact Us', sectionId: 'contact-us' },
+  ]
+
+  const socialLinks = [
+    {
+      name: 'Instagram',
+      href: '#',
+      icon: (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 3h8c2.8 0 5 2.2 5 5v8c0 2.8-2.2 5-5 5H8c-2.8 0-5-2.2-5-5V8c0-2.8 2.2-5 5-5Zm0 2C6.3 5 5 6.3 5 8v8c0 1.7 1.3 3 3 3h8c1.7 0 3-1.3 3-3V8c0-1.7-1.3-3-3-3H8Zm9.3 1.2a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+        </svg>
+      ),
+    },
+    {
+      name: 'Twitter',
+      href: '#',
+      icon: (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18.9 3H22l-6.8 7.8L23 21h-6.1l-4.8-6.3L6.6 21H3.5l7.2-8.3L1 3h6.3l4.3 5.7L18.9 3Zm-1.1 16h1.7L6.4 4.9H4.6L17.8 19Z" />
+        </svg>
+      ),
+    },
+    {
+      name: 'Facebook',
+      href: '#',
+      icon: (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.2c0-.9.3-1.5 1.6-1.5h1.7V4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V10H8v3h2.1v8h3.4Z" />
+        </svg>
+      ),
+    },
+  ]
+
   const goToSection = (sectionId) => {
     const section = document.getElementById(sectionId)
     if (!section) {
@@ -71,7 +114,38 @@ function App() {
 
   return (
     <div className="page">
-      <header className="hero">
+      <div className="social-bar" aria-label="Social links">
+        {socialLinks.map((item) => (
+          <a
+            key={item.name}
+            className="social-link"
+            href={item.href}
+            onClick={preventNavigation}
+            aria-label={item.name}
+            title={item.name}
+          >
+            {item.icon}
+          </a>
+        ))}
+      </div>
+
+      <nav className="top-tabs" aria-label="Primary navigation">
+        {tabs.map((tab) => (
+          <a
+            key={tab.label}
+            className="tab-link"
+            href="#"
+            onClick={(event) => {
+              event.preventDefault()
+              goToSection(tab.sectionId)
+            }}
+          >
+            {tab.label}
+          </a>
+        ))}
+      </nav>
+
+      <header className="hero" id="home">
         <div className="overlay" />
         <div className="hero-content">
           <p className="eyebrow">NutriVerse · Premium Dryfruits</p>
@@ -99,7 +173,7 @@ function App() {
         </div>
       </header>
 
-      <section className="quick-highlights section-gap">
+      <section className="quick-highlights section-gap" id="about-us">
         <article>
           <h3>Farm-Fresh Sourcing</h3>
           <p>Direct partnerships with trusted growers for consistent quality.</p>
@@ -142,7 +216,7 @@ function App() {
         </ul>
       </section>
 
-      <section className="section-gap">
+      <section className="section-gap" id="bulk-order">
         <div className="section-header">
           <p className="eyebrow">Price Ranges</p>
           <h2>Transparent Pricing for Every Need</h2>
@@ -174,7 +248,7 @@ function App() {
         </div>
       </section>
 
-      <section className="contact section-gap">
+      <section className="contact section-gap" id="contact-us">
         <div className="section-header">
           <p className="eyebrow">Contact Info</p>
           <h2>Get in Touch with NutriVerse</h2>
