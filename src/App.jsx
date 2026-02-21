@@ -14,6 +14,17 @@ const sectionBackgrounds = {
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
 const ASSET_BASE = import.meta.env.BASE_URL
+const hashToAuthMode = {
+  '#/login': 'login',
+  '#/signup': 'signup',
+  '#/profile': 'profile',
+}
+
+const authModeToHash = {
+  login: '#/login',
+  signup: '#/signup',
+  profile: '#/profile',
+}
 
 function App() {
   const preventNavigation = (event) => {
@@ -31,7 +42,7 @@ function App() {
 
   const [activeSection, setActiveSection] = useState('home')
   const [loadedBackgrounds, setLoadedBackgrounds] = useState({})
-  const [authMode, setAuthMode] = useState('none')
+  const [authMode, setAuthMode] = useState(() => hashToAuthMode[window.location.hash] || 'none')
   const [authStatus, setAuthStatus] = useState({ type: '', message: '' })
   const [authLoading, setAuthLoading] = useState(false)
   const [devOtpHint, setDevOtpHint] = useState('')
@@ -67,6 +78,15 @@ function App() {
         }))
       }
     })
+  }, [])
+
+  useEffect(() => {
+    const syncModeFromHash = () => {
+      setAuthMode(hashToAuthMode[window.location.hash] || 'none')
+    }
+
+    window.addEventListener('hashchange', syncModeFromHash)
+    return () => window.removeEventListener('hashchange', syncModeFromHash)
   }, [])
 
   useEffect(() => {
@@ -112,6 +132,12 @@ function App() {
 
   const openAuthMode = (mode) => {
     resetAuthStatus()
+    if (mode === 'none') {
+      window.location.hash = ''
+      setAuthMode('none')
+      return
+    }
+    window.location.hash = authModeToHash[mode]
     setAuthMode(mode)
   }
 
@@ -181,7 +207,7 @@ function App() {
       localStorage.setItem('nutriverse_auth_token', data.token)
       localStorage.setItem('nutriverse_auth_user', JSON.stringify(data.user))
       setAuthStatus({ type: 'success', message: 'Login successful. Profile validated from database.' })
-      setAuthMode('profile')
+      openAuthMode('profile')
     } catch {
       setAuthStatus({ type: 'error', message: 'Unable to verify login OTP.' })
     } finally {
@@ -265,7 +291,7 @@ function App() {
       setLoginOtpRequested(false)
       setSignupOtp('')
       setSignupOtpRequested(false)
-      setAuthMode('login')
+      openAuthMode('login')
     } catch {
       setAuthStatus({ type: 'error', message: 'Unable to verify signup OTP.' })
     } finally {
@@ -276,7 +302,7 @@ function App() {
   const logoutUser = () => {
     setAuthToken('')
     setAuthUser(null)
-    setAuthMode('login')
+    openAuthMode('login')
     localStorage.removeItem('nutriverse_auth_token')
     localStorage.removeItem('nutriverse_auth_user')
     setAuthStatus({ type: 'success', message: 'You have been logged out.' })
@@ -548,66 +574,21 @@ function App() {
     ? `linear-gradient(120deg, rgba(15, 12, 8, 0.86), rgba(34, 26, 15, 0.68)), url(${activeBackground})`
     : 'linear-gradient(120deg, rgba(15, 12, 8, 0.92), rgba(34, 26, 15, 0.8))'
 
-  return (
-    <div
-      className="site-shell"
-      style={{
-        backgroundImage: backgroundStyle,
-        backgroundColor: '#13120f',
-      }}
-    >
-      <div className="page">
-        <div className="logo-container">
-          <div className="logo-box">
-            <p className="logo-text">N<span className="logo-accent">V</span></p>
-          </div>
-          <p className="tagline">Naturally Wholesome • Premium Dryfruits</p>
-        </div>
-
-        <div className="top-row">
-          <nav className="top-tabs" aria-label="Primary navigation">
-            {tabs.map((tab) => (
-              <a
-                key={tab.label}
-                className="tab-link"
-                href="#"
-                onClick={(event) => {
-                  event.preventDefault()
-                  goToSection(tab.sectionId)
-                }}
-              >
-                {tab.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="auth-controls">
-            <button
-              type="button"
-              className="auth-login-btn"
-              onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
-            >
-              {authUser ? 'My Account' : 'Login'}
-            </button>
-            <button
-              type="button"
-              className="profile-idle-btn"
-              aria-label="Profile"
-              onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.3-8 5.1 0 .5.4.9.9.9h14.2c.5 0 .9-.4.9-.9 0-2.8-3.6-5.1-8-5.1Z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {authMode !== 'none' && (
-          <section className="auth-panel section-gap" id="auth-panel">
+  if (authMode !== 'none') {
+    return (
+      <div
+        className="site-shell"
+        style={{
+          backgroundImage: backgroundStyle,
+          backgroundColor: '#13120f',
+        }}
+      >
+        <div className="auth-page-shell">
+          <section className="auth-panel auth-page-card" id="auth-panel">
             <div className="auth-panel-head">
               <h2>{authMode === 'signup' ? 'Create Your NutriVerse Account' : authMode === 'profile' ? 'My Profile' : 'Login to NutriVerse'}</h2>
-              <button type="button" className="auth-close" onClick={() => setAuthMode('none')}>
-                Close
+              <button type="button" className="auth-close" onClick={() => openAuthMode('none')}>
+                Back to Home
               </button>
             </div>
 
@@ -664,10 +645,7 @@ function App() {
                   <button
                     type="button"
                     className="auth-switch"
-                    onClick={() => {
-                      setAuthMode('signup')
-                      resetAuthStatus()
-                    }}
+                    onClick={() => openAuthMode('signup')}
                   >
                     New user? Signup
                   </button>
@@ -761,10 +739,7 @@ function App() {
                   <button
                     type="button"
                     className="auth-switch"
-                    onClick={() => {
-                      setAuthMode('login')
-                      resetAuthStatus()
-                    }}
+                    onClick={() => openAuthMode('login')}
                   >
                     Back to Login
                   </button>
@@ -783,7 +758,64 @@ function App() {
               </div>
             )}
           </section>
-        )}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      className="site-shell"
+      style={{
+        backgroundImage: backgroundStyle,
+        backgroundColor: '#13120f',
+      }}
+    >
+      <div className="page">
+        <div className="logo-container">
+          <div className="logo-box">
+            <p className="logo-text">N<span className="logo-accent">V</span></p>
+          </div>
+          <p className="tagline">Naturally Wholesome • Premium Dryfruits</p>
+        </div>
+
+        <div className="top-row">
+          <nav className="top-tabs" aria-label="Primary navigation">
+            {tabs.map((tab) => (
+              <a
+                key={tab.label}
+                className="tab-link"
+                href="#"
+                onClick={(event) => {
+                  event.preventDefault()
+                  goToSection(tab.sectionId)
+                }}
+              >
+                {tab.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="auth-controls">
+            <button
+              type="button"
+              className="auth-login-btn"
+              onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
+            >
+              {authUser ? 'My Account' : 'Login'}
+            </button>
+            <button
+              type="button"
+              className="profile-idle-btn"
+              aria-label="Profile"
+              onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.3-8 5.1 0 .5.4.9.9.9h14.2c.5 0 .9-.4.9-.9 0-2.8-3.6-5.1-8-5.1Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
         <header className="hero" id="home">
           <div className="overlay" />
