@@ -12,6 +12,9 @@ const sectionBackgrounds = {
   'contact-us': dryfruitsImage,
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
+const ASSET_BASE = import.meta.env.BASE_URL
+
 function App() {
   const preventNavigation = (event) => {
     event.preventDefault()
@@ -28,6 +31,30 @@ function App() {
 
   const [activeSection, setActiveSection] = useState('home')
   const [loadedBackgrounds, setLoadedBackgrounds] = useState({})
+  const [authMode, setAuthMode] = useState('none')
+  const [authStatus, setAuthStatus] = useState({ type: '', message: '' })
+  const [authLoading, setAuthLoading] = useState(false)
+  const [devOtpHint, setDevOtpHint] = useState('')
+
+  const [loginMobile, setLoginMobile] = useState('')
+  const [loginOtp, setLoginOtp] = useState('')
+  const [loginOtpRequested, setLoginOtpRequested] = useState(false)
+  const [showSignupOption, setShowSignupOption] = useState(false)
+
+  const [signupForm, setSignupForm] = useState({
+    name: '',
+    mobile: '',
+    address: '',
+    pincode: '',
+  })
+  const [signupOtp, setSignupOtp] = useState('')
+  const [signupOtpRequested, setSignupOtpRequested] = useState(false)
+
+  const [authToken, setAuthToken] = useState(() => localStorage.getItem('nutriverse_auth_token') || '')
+  const [authUser, setAuthUser] = useState(() => {
+    const cached = localStorage.getItem('nutriverse_auth_user')
+    return cached ? JSON.parse(cached) : null
+  })
 
   useEffect(() => {
     Object.entries(sectionBackgrounds).forEach(([key, url]) => {
@@ -41,6 +68,219 @@ function App() {
       }
     })
   }, [])
+
+  useEffect(() => {
+    if (!authToken) {
+      return
+    }
+
+    const loadProfile = async () => {
+      try {
+        const response = await fetch(`${API_BASE}/api/auth/profile`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+        const data = await response.json()
+
+        if (!response.ok) {
+          setAuthToken('')
+          setAuthUser(null)
+          localStorage.removeItem('nutriverse_auth_token')
+          localStorage.removeItem('nutriverse_auth_user')
+          return
+        }
+
+        setAuthUser(data.user)
+        localStorage.setItem('nutriverse_auth_user', JSON.stringify(data.user))
+      } catch {
+        setAuthStatus({ type: 'error', message: 'Unable to validate profile right now.' })
+      }
+    }
+
+    loadProfile()
+  }, [authToken])
+
+  const normalizeMobile = (value) => value.replace(/\D/g, '').slice(0, 10)
+
+  const fullIndianMobile = (digits) => `+91${digits}`
+
+  const resetAuthStatus = () => {
+    setAuthStatus({ type: '', message: '' })
+    setDevOtpHint('')
+  }
+
+  const openAuthMode = (mode) => {
+    resetAuthStatus()
+    setAuthMode(mode)
+  }
+
+  const requestLoginOtp = async () => {
+    if (loginMobile.length !== 10) {
+      setAuthStatus({ type: 'error', message: 'Enter a valid 10-digit mobile number.' })
+      return
+    }
+
+    setAuthLoading(true)
+    resetAuthStatus()
+    setShowSignupOption(false)
+
+    try {
+      const response = await fetch(`${API_BASE}/api/auth/login/request-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile: fullIndianMobile(loginMobile) }),
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        setAuthStatus({ type: 'error', message: data.message || 'Failed to request OTP.' })
+        setShowSignupOption(Boolean(data.showSignup))
+        return
+      }
+
+      setLoginOtpRequested(true)
+      setAuthStatus({ type: 'success', message: data.message })
+      if (data.devOtp) {
+        setDevOtpHint(`Dev OTP: ${data.devOtp}`)
+      }
+    } catch {
+      setAuthStatus({ type: 'error', message: 'Server is unreachable. Start backend on port 5000.' })
+    } finally {
+      setAuthLoading(false)
+    }
+  }
+
+  const verifyLoginOtp = async () => {
+    if (!loginOtp.match(/^\d{6}$/)) {
+      setAuthStatus({ type: 'error', message: 'OTP must be 6 digits.' })
+      return
+    }
+
+    setAuthLoading(true)
+    resetAuthStatus()
+
+    try {
+      const response = await fetch(`${API_BASE}/api/auth/login/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mobile: fullIndianMobile(loginMobile),
+          otp: loginOtp,
+        }),
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        setAuthStatus({ type: 'error', message: data.message || 'Login failed.' })
+        return
+      }
+
+      setAuthToken(data.token)
+      setAuthUser(data.user)
+      localStorage.setItem('nutriverse_auth_token', data.token)
+      localStorage.setItem('nutriverse_auth_user', JSON.stringify(data.user))
+      setAuthStatus({ type: 'success', message: 'Login successful. Profile validated from database.' })
+      setAuthMode('profile')
+    } catch {
+      setAuthStatus({ type: 'error', message: 'Unable to verify login OTP.' })
+    } finally {
+      setAuthLoading(false)
+    }
+  }
+
+  const requestSignupOtp = async () => {
+    const { name, mobile, address, pincode } = signupForm
+    if (!name.trim() || !address.trim() || !pincode.trim() || mobile.length !== 10) {
+      setAuthStatus({ type: 'error', message: 'All fields are mandatory with valid mobile.' })
+      return
+    }
+
+    if (!pincode.match(/^\d{6}$/)) {
+      setAuthStatus({ type: 'error', message: 'Pincode must be exactly 6 digits.' })
+      return
+    }
+
+    setAuthLoading(true)
+    resetAuthStatus()
+
+    try {
+      const response = await fetch(`${API_BASE}/api/auth/signup/request-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          mobile: fullIndianMobile(mobile),
+          address: address.trim(),
+          pincode: pincode.trim(),
+        }),
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        setAuthStatus({ type: 'error', message: data.message || 'Signup OTP request failed.' })
+        return
+      }
+
+      setSignupOtpRequested(true)
+      setAuthStatus({ type: 'success', message: data.message })
+      if (data.devOtp) {
+        setDevOtpHint(`Dev OTP: ${data.devOtp}`)
+      }
+    } catch {
+      setAuthStatus({ type: 'error', message: 'Unable to connect to auth server.' })
+    } finally {
+      setAuthLoading(false)
+    }
+  }
+
+  const verifySignupOtp = async () => {
+    if (!signupOtp.match(/^\d{6}$/)) {
+      setAuthStatus({ type: 'error', message: 'OTP must be 6 digits.' })
+      return
+    }
+
+    setAuthLoading(true)
+    resetAuthStatus()
+
+    try {
+      const response = await fetch(`${API_BASE}/api/auth/signup/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mobile: fullIndianMobile(signupForm.mobile),
+          otp: signupOtp,
+        }),
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        setAuthStatus({ type: 'error', message: data.message || 'Signup verification failed.' })
+        return
+      }
+
+      setAuthStatus({ type: 'success', message: 'Signup complete. Please login now.' })
+      setLoginMobile(signupForm.mobile)
+      setLoginOtp('')
+      setLoginOtpRequested(false)
+      setSignupOtp('')
+      setSignupOtpRequested(false)
+      setAuthMode('login')
+    } catch {
+      setAuthStatus({ type: 'error', message: 'Unable to verify signup OTP.' })
+    } finally {
+      setAuthLoading(false)
+    }
+  }
+
+  const logoutUser = () => {
+    setAuthToken('')
+    setAuthUser(null)
+    setAuthMode('login')
+    localStorage.removeItem('nutriverse_auth_token')
+    localStorage.removeItem('nutriverse_auth_user')
+    setAuthStatus({ type: 'success', message: 'You have been logged out.' })
+  }
 
   const socialLinks = [
     {
@@ -91,7 +331,7 @@ function App() {
     {
       name: 'California Almonds',
       details: 'Protein-rich crunchy almonds for daily snacking and breakfast.',
-      image: '/nutriverse/assets/almonds.jpg',
+      image: `${ASSET_BASE}assets/almonds.jpg`,
       pricing: {
         '250g': '₹260',
         '500g': '₹500',
@@ -102,7 +342,7 @@ function App() {
     {
       name: 'Premium Cashews',
       details: 'W240 and W320 grade handpicked whole cashews.',
-      image: '/nutriverse/assets/cashews.jpg',
+      image: `${ASSET_BASE}assets/cashews.jpg`,
       pricing: {
         '250g': '₹320',
         '500g': '₹620',
@@ -113,7 +353,7 @@ function App() {
     {
       name: 'Roasted Pistachios',
       details: 'Salted premium pistachios with natural flavor and crunch.',
-      image: '/nutriverse/assets/pistachios.jpg',
+      image: `${ASSET_BASE}assets/pistachios.jpg`,
       pricing: {
         '250g': '₹380',
         '500g': '₹740',
@@ -124,7 +364,7 @@ function App() {
     {
       name: 'Walnut Kernels',
       details: 'Omega-rich walnut halves ideal for smoothies and salads.',
-      image: '/nutriverse/assets/walnuts.jpg',
+      image: `${ASSET_BASE}assets/walnuts.jpg`,
       pricing: {
         '250g': '₹290',
         '500g': '₹560',
@@ -135,7 +375,7 @@ function App() {
     {
       name: 'Afghan Raisins',
       details: 'Naturally sweet seedless raisins for desserts and snacking.',
-      image: '/nutriverse/assets/raisins.jpg',
+      image: `${ASSET_BASE}assets/raisins.jpg`,
       pricing: {
         '250g': '₹180',
         '500g': '₹340',
@@ -146,7 +386,7 @@ function App() {
     {
       name: 'Premium Dates',
       details: 'Rich and creamy premium dates packed with natural sweetness and nutrients.',
-      image: '/nutriverse/assets/dates.jpg',
+      image: `${ASSET_BASE}assets/dates.jpg`,
       pricing: {
         '250g': '₹220',
         '500g': '₹420',
@@ -157,7 +397,7 @@ function App() {
     {
       name: 'Fresh Figs',
       details: 'Dried figs with natural sweetness, perfect for snacking and cooking.',
-      image: '/nutriverse/assets/figs.jpg',
+      image: `${ASSET_BASE}assets/figs.jpg`,
       pricing: {
         '250g': '₹240',
         '500g': '₹460',
@@ -340,7 +580,210 @@ function App() {
               </a>
             ))}
           </nav>
+
+          <div className="auth-controls">
+            <button
+              type="button"
+              className="auth-login-btn"
+              onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
+            >
+              {authUser ? 'My Account' : 'Login'}
+            </button>
+            <button
+              type="button"
+              className="profile-idle-btn"
+              aria-label="Profile"
+              onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.3-8 5.1 0 .5.4.9.9.9h14.2c.5 0 .9-.4.9-.9 0-2.8-3.6-5.1-8-5.1Z" />
+              </svg>
+            </button>
+          </div>
         </div>
+
+        {authMode !== 'none' && (
+          <section className="auth-panel section-gap" id="auth-panel">
+            <div className="auth-panel-head">
+              <h2>{authMode === 'signup' ? 'Create Your NutriVerse Account' : authMode === 'profile' ? 'My Profile' : 'Login to NutriVerse'}</h2>
+              <button type="button" className="auth-close" onClick={() => setAuthMode('none')}>
+                Close
+              </button>
+            </div>
+
+            {authStatus.message && (
+              <p className={`auth-alert ${authStatus.type === 'error' ? 'error' : 'success'}`}>
+                {authStatus.message}
+              </p>
+            )}
+
+            {devOtpHint && <p className="dev-otp-hint">{devOtpHint}</p>}
+
+            {authMode === 'login' && (
+              <div className="auth-form-grid">
+                <label className="auth-label" htmlFor="login-mobile">Mobile Number</label>
+                <div className="mobile-input-wrap">
+                  <span>+91</span>
+                  <input
+                    id="login-mobile"
+                    type="tel"
+                    inputMode="numeric"
+                    maxLength={10}
+                    value={loginMobile}
+                    onChange={(event) => setLoginMobile(normalizeMobile(event.target.value))}
+                    placeholder="10-digit number"
+                  />
+                </div>
+
+                {loginOtpRequested && (
+                  <>
+                    <label className="auth-label" htmlFor="login-otp">Enter OTP</label>
+                    <input
+                      id="login-otp"
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      value={loginOtp}
+                      onChange={(event) => setLoginOtp(event.target.value.replace(/\D/g, '').slice(0, 6))}
+                      placeholder="6-digit OTP"
+                    />
+                  </>
+                )}
+
+                <div className="auth-action-row">
+                  {!loginOtpRequested ? (
+                    <button type="button" className="auth-cta" onClick={requestLoginOtp} disabled={authLoading}>
+                      {authLoading ? 'Sending OTP...' : 'Send OTP'}
+                    </button>
+                  ) : (
+                    <button type="button" className="auth-cta" onClick={verifyLoginOtp} disabled={authLoading}>
+                      {authLoading ? 'Verifying...' : 'Verify & Login'}
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    className="auth-switch"
+                    onClick={() => {
+                      setAuthMode('signup')
+                      resetAuthStatus()
+                    }}
+                  >
+                    New user? Signup
+                  </button>
+                </div>
+
+                {showSignupOption && (
+                  <p className="auth-inline-note">
+                    User not found. Signup first to continue.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {authMode === 'signup' && (
+              <div className="auth-form-grid">
+                <label className="auth-label" htmlFor="signup-name">Full Name</label>
+                <input
+                  id="signup-name"
+                  type="text"
+                  value={signupForm.name}
+                  onChange={(event) => setSignupForm((current) => ({ ...current, name: event.target.value }))}
+                  placeholder="Enter your full name"
+                />
+
+                <label className="auth-label" htmlFor="signup-mobile">Mobile Number</label>
+                <div className="mobile-input-wrap">
+                  <span>+91</span>
+                  <input
+                    id="signup-mobile"
+                    type="tel"
+                    inputMode="numeric"
+                    maxLength={10}
+                    value={signupForm.mobile}
+                    onChange={(event) => setSignupForm((current) => ({
+                      ...current,
+                      mobile: normalizeMobile(event.target.value),
+                    }))}
+                    placeholder="10-digit number"
+                  />
+                </div>
+
+                <label className="auth-label" htmlFor="signup-address">Address</label>
+                <textarea
+                  id="signup-address"
+                  rows={3}
+                  value={signupForm.address}
+                  onChange={(event) => setSignupForm((current) => ({ ...current, address: event.target.value }))}
+                  placeholder="Full address"
+                />
+
+                <label className="auth-label" htmlFor="signup-pincode">Pincode</label>
+                <input
+                  id="signup-pincode"
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={signupForm.pincode}
+                  onChange={(event) => setSignupForm((current) => ({
+                    ...current,
+                    pincode: event.target.value.replace(/\D/g, '').slice(0, 6),
+                  }))}
+                  placeholder="6-digit pincode"
+                />
+
+                {signupOtpRequested && (
+                  <>
+                    <label className="auth-label" htmlFor="signup-otp">Enter OTP</label>
+                    <input
+                      id="signup-otp"
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      value={signupOtp}
+                      onChange={(event) => setSignupOtp(event.target.value.replace(/\D/g, '').slice(0, 6))}
+                      placeholder="6-digit OTP"
+                    />
+                  </>
+                )}
+
+                <div className="auth-action-row">
+                  {!signupOtpRequested ? (
+                    <button type="button" className="auth-cta" onClick={requestSignupOtp} disabled={authLoading}>
+                      {authLoading ? 'Sending OTP...' : 'Send OTP'}
+                    </button>
+                  ) : (
+                    <button type="button" className="auth-cta" onClick={verifySignupOtp} disabled={authLoading}>
+                      {authLoading ? 'Verifying...' : 'Verify & Create Account'}
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    className="auth-switch"
+                    onClick={() => {
+                      setAuthMode('login')
+                      resetAuthStatus()
+                    }}
+                  >
+                    Back to Login
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {authMode === 'profile' && authUser && (
+              <div className="profile-card">
+                <p><strong>Name:</strong> {authUser.name}</p>
+                <p><strong>Mobile:</strong> {authUser.mobile}</p>
+                <p><strong>Address:</strong> {authUser.address}</p>
+                <p><strong>Pincode:</strong> {authUser.pincode}</p>
+                <p className="profile-ok">Validated against MySQL user records.</p>
+                <button type="button" className="auth-cta danger" onClick={logoutUser}>Logout</button>
+              </div>
+            )}
+          </section>
+        )}
 
         <header className="hero" id="home">
           <div className="overlay" />
