@@ -104,9 +104,9 @@ body {
 .top-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 0.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.7rem;
   position: sticky;
   top: 0.75rem;
   z-index: 40;
@@ -175,8 +175,8 @@ body {
 }
 
 .section-gap {
-  margin-top: 1.4rem;
-  scroll-margin-top: 7rem;
+  margin-top: 0.85rem;
+  scroll-margin-top: 6rem;
 }
 
 .section-flash {
@@ -202,14 +202,21 @@ body {
   position: relative;
   border-radius: 28px;
   overflow: hidden;
-  min-height: 500px;
-  display: flex;
-  align-items: center;
-  padding: 3rem;
+  min-height: 560px;
+  padding: 3.2rem;
   background-image: linear-gradient(120deg, rgba(15, 12, 8, 0.74), rgba(34, 26, 15, 0.46));
   background-size: cover;
   background-position: center;
   box-shadow: 0 26px 45px rgba(0, 0, 0, 0.35);
+}
+
+.hero-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+  gap: 1.4rem;
+  align-items: stretch;
+  min-height: 100%;
 }
 
 .overlay {
@@ -220,7 +227,34 @@ body {
 
 .hero-content {
   position: relative;
-  max-width: 650px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-showcase {
+  position: relative;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.hero-point {
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(2px);
+}
+
+.hero-point h4 {
+  margin: 0;
+  color: #fff2d4;
+}
+
+.hero-point p {
+  margin: 0.45rem 0 0;
+  color: #efe6d8;
 }
 
 .eyebrow {
@@ -434,6 +468,11 @@ h2 {
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+.contact-social {
+  margin-top: 0.8rem;
+  justify-content: flex-start;
+}
+
 .contact-card p {
   margin: 0.45rem 0;
   color: #efe6d8;
@@ -625,6 +664,10 @@ h2 {
     padding: 2rem;
   }
 
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+
   .quick-highlights,
   .product-grid,
   .pricing-grid,
@@ -645,6 +688,10 @@ h2 {
   }
 
   .social-bar {
+    justify-content: center;
+  }
+
+  .contact-social {
     justify-content: center;
   }
 

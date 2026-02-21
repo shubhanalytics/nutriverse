@@ -340,48 +340,50 @@ function App() {
               </a>
             ))}
           </nav>
-
-          <div className="social-bar" aria-label="Social links">
-            {socialLinks.map((item) => (
-              <a
-                key={item.name}
-                className="social-link"
-                href={item.href}
-                onClick={preventNavigation}
-                aria-label={item.name}
-                title={item.name}
-              >
-                {item.icon}
-              </a>
-            ))}
-          </div>
         </div>
 
         <header className="hero" id="home">
           <div className="overlay" />
-          <div className="hero-content">
-            <p className="eyebrow">NutriVerse · Premium Dryfruits</p>
-            <h1>Fresh, Handpicked Dryfruits For Everyday Wellness</h1>
-            <p className="subtitle">
-              Visit NutriVerse for premium almonds, pistachios, cashews, walnuts,
-              raisins, and custom gift boxes.
-            </p>
-            <div className="hero-actions">
-              <button
-                className="primary"
-                type="button"
-                onClick={() => goToSection('products')}
-              >
-                Explore Collections
-              </button>
-              <button
-                className="secondary"
-                type="button"
-                onClick={() => goToSection('locations')}
-              >
-                Visit Store
-              </button>
+          <div className="hero-inner">
+            <div className="hero-content">
+              <p className="eyebrow">NutriVerse · Premium Dryfruits</p>
+              <h1>Fresh, Handpicked Dryfruits For Everyday Wellness</h1>
+              <p className="subtitle">
+                Visit NutriVerse for premium almonds, pistachios, cashews, walnuts,
+                raisins, dates, figs, and festive gifting assortments.
+              </p>
+              <div className="hero-actions">
+                <button
+                  className="primary"
+                  type="button"
+                  onClick={() => goToSection('products')}
+                >
+                  Explore Collections
+                </button>
+                <button
+                  className="secondary"
+                  type="button"
+                  onClick={() => goToSection('locations')}
+                >
+                  Visit Store
+                </button>
+              </div>
             </div>
+
+            <aside className="hero-showcase" aria-label="NutriVerse highlights">
+              <article className="hero-point">
+                <h4>100% Fresh Batches</h4>
+                <p>Carefully packed with moisture-controlled storage standards.</p>
+              </article>
+              <article className="hero-point">
+                <h4>Premium Daily Nutrition</h4>
+                <p>Protein-rich nuts and naturally sweet dryfruits for every day.</p>
+              </article>
+              <article className="hero-point">
+                <h4>Bulk & Gifting Ready</h4>
+                <p>Custom orders for corporate gifting and family occasions.</p>
+              </article>
+            </aside>
           </div>
         </header>
 
@@ -519,6 +521,20 @@ function App() {
           <p><strong>Email:</strong> hello@nutriverse.in</p>
           <p><strong>Main Store:</strong> Shop 14, Central Market Road, Main City</p>
           <p><strong>WhatsApp Orders:</strong> Available from 10:00 AM – 8:00 PM</p>
+          <div className="social-bar contact-social" aria-label="Social links">
+            {socialLinks.map((item) => (
+              <a
+                key={item.name}
+                className="social-link"
+                href={item.href}
+                onClick={preventNavigation}
+                aria-label={item.name}
+                title={item.name}
+              >
+                {item.icon}
+              </a>
+            ))}
+          </div>
         </div>
         </section>
 
