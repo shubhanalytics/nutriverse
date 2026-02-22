@@ -156,6 +156,48 @@ body {
   margin-bottom: 0;
 }
 
+.top-row-right {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-left: auto;
+}
+
+.menu-toggle {
+  display: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: #f1e4d0;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.menu-toggle.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
 .auth-controls {
   display: flex;
   align-items: center;
@@ -958,10 +1000,12 @@ h2 {
   }
 
   .top-row {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     top: 0;
     border-radius: 0 0 16px 16px;
+    position: sticky;
   }
 
   .social-bar {
@@ -973,12 +1017,47 @@ h2 {
   }
 
   .top-tabs {
-    justify-content: center;
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    right: 0.55rem;
+    width: min(240px, 86vw);
+    padding: 0.55rem;
+    border-radius: 14px;
+    background: rgba(19, 18, 15, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(8px);
+    z-index: 60;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .top-tabs.open {
+    display: flex;
+  }
+
+  .top-tabs .tab-link {
+    width: 100%;
+    border-radius: 10px;
+    text-align: left;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .top-row-right {
+    margin-left: 0;
   }
 
   .auth-controls {
-    width: 100%;
-    justify-content: center;
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  .profile-idle-btn {
+    display: none;
   }
 
   .quick-highlights,
