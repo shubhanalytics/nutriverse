@@ -154,6 +154,7 @@ body {
   flex-wrap: wrap;
   gap: 0.55rem;
   margin-bottom: 0;
+  justify-content: center;
 }
 
 .top-row-right {
@@ -599,6 +600,32 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
+.carousel-arrow {
+  display: none;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  padding: 0;
+  border-radius: 10px;
+  background: rgba(230, 187, 115, 0.2);
+  border: 1px solid rgba(230, 187, 115, 0.4);
+  color: #e6bb73;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 250ms ease;
+  flex-shrink: 0;
+}
+
+.carousel-arrow:hover {
+  background: rgba(230, 187, 115, 0.35);
+  transform: scale(1.08);
+}
+
+.carousel-arrow:active {
+  transform: scale(0.96);
+}
+
 .quick-highlights,
 .product-grid,
 .pricing-grid,
@@ -606,6 +633,13 @@ button {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.5rem;
+  margin-top: 0.9rem;
+}
+
+.location-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-top: 0.9rem;
 }
 
@@ -1214,6 +1248,40 @@ h2 {
   .feedback-grid,
   .service-grid {
     grid-template-columns: 1fr;
+  }
+
+  .location-carousel-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.55rem;
+  }
+
+  .location-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.72rem;
+    padding: 0.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    flex: 1;
+  }
+
+  .location-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .location-grid .card {
+    min-width: 280px;
+    width: 280px;
+  }
+
+  .carousel-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .service-grid {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './index.css'
 
 const ASSET_BASE = import.meta.env.BASE_URL
@@ -60,6 +60,8 @@ function App() {
   const [activeSection, setActiveSection] = useState('home')
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
   const [loadedBackgrounds, setLoadedBackgrounds] = useState({})
+  const [locationScrollPos, setLocationScrollPos] = useState(0)
+  const locationScrollContainerRef = useRef(null)
   const [authMode, setAuthMode] = useState('none')
   const [authStatus, setAuthStatus] = useState({ type: '', message: '' })
   const [authLoading, setAuthLoading] = useState(false)
@@ -457,6 +459,16 @@ function App() {
     Object.fromEntries(products.map((product) => [product.name, '250g']))
   ))
 
+  const handleLocationScroll = (direction) => {
+    if (locationScrollContainerRef.current) {
+      const container = locationScrollContainerRef.current
+      const scrollAmount = 320 // card width + gap
+      const newPos = locationScrollPos + (direction === 'left' ? -scrollAmount : scrollAmount)
+      container.scrollTo({ left: newPos, behavior: 'smooth' })
+      setLocationScrollPos(newPos)
+    }
+  }
+
   const qualityPoints = [
     'Sourced from verified farms and import partners',
     'Batch-wise freshness checks and moisture control',
@@ -496,6 +508,16 @@ function App() {
       ...current,
       [productName]: quantity,
     }))
+  }
+
+  const handleLocationScroll = (direction) => {
+    if (locationScrollContainerRef.current) {
+      const container = locationScrollContainerRef.current
+      const scrollAmount = 320 // card width + gap
+      const newPos = locationScrollPos + (direction === 'left' ? -scrollAmount : scrollAmount)
+      container.scrollTo({ left: newPos, behavior: 'smooth' })
+      setLocationScrollPos(newPos)
+    }
   }
 
   const customerFeedback = [
@@ -805,15 +827,31 @@ function App() {
           <p className="eyebrow">Our Locations</p>
           <h2>Visit NutriVerse Near You</h2>
         </div>
-        <div className="location-grid">
-          {stores.map((shop) => (
-            <article className="card" key={shop.branch}>
-              <h4>{shop.branch}</h4>
-              <p>{shop.address}</p>
-              <p><strong>Store Contact:</strong> {shop.phone}</p>
-              <span className="meta">Hours: {shop.hours}</span>
-            </article>
-          ))}
+        <div className="location-carousel-wrapper">
+          <button
+            className="carousel-arrow carousel-arrow-left"
+            onClick={() => handleLocationScroll('left')}
+            aria-label="Scroll locations left"
+          >
+            ←
+          </button>
+          <div className="location-grid" ref={locationScrollContainerRef}>
+            {stores.map((shop) => (
+              <article className="card" key={shop.branch}>
+                <h4>{shop.branch}</h4>
+                <p>{shop.address}</p>
+                <p><strong>Store Contact:</strong> {shop.phone}</p>
+                <span className="meta">Hours: {shop.hours}</span>
+              </article>
+            ))}
+          </div>
+          <button
+            className="carousel-arrow carousel-arrow-right"
+            onClick={() => handleLocationScroll('right')}
+            aria-label="Scroll locations right"
+          >
+            →
+          </button>
         </div>
         </section>
 
