@@ -1388,9 +1388,9 @@ h2 {
   }
 
   .service-card {
-    min-width: 108px;
-    width: 108px;
-    padding: 0.45rem;
+    min-width: auto;
+    width: auto;
+    padding: 0.62rem;
   }
 
   .service-card h4 {
