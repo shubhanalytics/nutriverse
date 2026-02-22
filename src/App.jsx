@@ -58,6 +58,7 @@ function App() {
   ]
 
   const [activeSection, setActiveSection] = useState('home')
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
   const [loadedBackgrounds, setLoadedBackgrounds] = useState({})
   const [authMode, setAuthMode] = useState(() => hashToAuthMode[window.location.hash] || 'none')
   const [authStatus, setAuthStatus] = useState({ type: '', message: '' })
@@ -357,6 +358,7 @@ function App() {
 
   const goToSection = (sectionId) => {
     setActiveSection(sectionId)
+    setIsMobileNavOpen(false)
 
     const section = document.getElementById(sectionId)
     if (!section) {
@@ -810,7 +812,7 @@ function App() {
         </div>
 
         <div className="top-row">
-          <nav className="top-tabs" aria-label="Primary navigation">
+          <nav className={`top-tabs ${isMobileNavOpen ? 'open' : ''}`} aria-label="Primary navigation">
             {tabs.map((tab) => (
               <a
                 key={tab.label}
@@ -826,24 +828,38 @@ function App() {
             ))}
           </nav>
 
-          <div className="auth-controls">
+          <div className="top-row-right">
             <button
               type="button"
-              className="auth-login-btn"
-              onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
+              className={`menu-toggle ${isMobileNavOpen ? 'open' : ''}`}
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileNavOpen}
+              onClick={() => setIsMobileNavOpen((current) => !current)}
             >
-              {authUser ? 'My Account' : 'Login'}
+              <span />
+              <span />
+              <span />
             </button>
-            <button
-              type="button"
-              className="profile-idle-btn"
-              aria-label="Profile"
-              onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.3-8 5.1 0 .5.4.9.9.9h14.2c.5 0 .9-.4.9-.9 0-2.8-3.6-5.1-8-5.1Z" />
-              </svg>
-            </button>
+
+            <div className="auth-controls">
+              <button
+                type="button"
+                className="auth-login-btn"
+                onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
+              >
+                {authUser ? 'My Account' : 'Login/Signup'}
+              </button>
+              <button
+                type="button"
+                className="profile-idle-btn"
+                aria-label="Profile"
+                onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.3-8 5.1 0 .5.4.9.9.9h14.2c.5 0 .9-.4.9-.9 0-2.8-3.6-5.1-8-5.1Z" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
