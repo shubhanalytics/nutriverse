@@ -510,16 +510,6 @@ function App() {
     }))
   }
 
-  const handleLocationScroll = (direction) => {
-    if (locationScrollContainerRef.current) {
-      const container = locationScrollContainerRef.current
-      const scrollAmount = 320 // card width + gap
-      const newPos = locationScrollPos + (direction === 'left' ? -scrollAmount : scrollAmount)
-      container.scrollTo({ left: newPos, behavior: 'smooth' })
-      setLocationScrollPos(newPos)
-    }
-  }
-
   const customerFeedback = [
     {
       name: 'Rajesh Kumar',
