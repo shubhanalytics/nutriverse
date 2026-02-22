@@ -1354,3 +1354,46 @@ h2 {
 .divider {
   color: rgba(196, 169, 98, 0.5);
 }
+
+.floating-whatsapp {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: #25d366;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  z-index: 999;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.floating-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.34);
+}
+
+.floating-whatsapp svg {
+  width: 27px;
+  height: 27px;
+  fill: currentColor;
+}
+
+@media (max-width: 700px) {
+  .floating-whatsapp {
+    width: 52px;
+    height: 52px;
+    right: 0.8rem;
+    bottom: 0.8rem;
+  }
+
+  .floating-whatsapp svg {
+    width: 24px;
+    height: 24px;
+  }
+}

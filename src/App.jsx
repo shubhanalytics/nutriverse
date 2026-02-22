@@ -60,7 +60,7 @@ function App() {
   const [activeSection, setActiveSection] = useState('home')
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
   const [loadedBackgrounds, setLoadedBackgrounds] = useState({})
-  const [authMode, setAuthMode] = useState(() => hashToAuthMode[window.location.hash] || 'none')
+  const [authMode, setAuthMode] = useState('none')
   const [authStatus, setAuthStatus] = useState({ type: '', message: '' })
   const [authLoading, setAuthLoading] = useState(false)
   const [devOtpHint, setDevOtpHint] = useState('')
@@ -587,197 +587,6 @@ function App() {
     ? `linear-gradient(120deg, rgba(15, 12, 8, 0.86), rgba(34, 26, 15, 0.68)), url(${activeBackground})`
     : 'linear-gradient(120deg, rgba(15, 12, 8, 0.92), rgba(34, 26, 15, 0.8))'
 
-  if (authMode !== 'none') {
-    return (
-      <div
-        className="site-shell"
-        style={{
-          backgroundImage: backgroundStyle,
-          '--section-bg-pos': activeBackgroundPosition,
-          '--section-bg-pos-mobile': activeBackgroundPositionMobile,
-          backgroundColor: '#13120f',
-        }}
-      >
-        <div className="auth-page-shell">
-          <section className="auth-panel auth-page-card" id="auth-panel">
-            <div className="auth-panel-head">
-              <h2>{authMode === 'signup' ? 'Create Your NutriVerse Account' : authMode === 'profile' ? 'My Profile' : 'Login to NutriVerse'}</h2>
-              <button type="button" className="auth-close" onClick={() => openAuthMode('none')}>
-                Back to Home
-              </button>
-            </div>
-
-            {authStatus.message && (
-              <p className={`auth-alert ${authStatus.type === 'error' ? 'error' : 'success'}`}>
-                {authStatus.message}
-              </p>
-            )}
-
-            {devOtpHint && <p className="dev-otp-hint">{devOtpHint}</p>}
-
-            {authMode === 'login' && (
-              <div className="auth-form-grid">
-                <label className="auth-label" htmlFor="login-mobile">Mobile Number</label>
-                <div className="mobile-input-wrap">
-                  <span>+91</span>
-                  <input
-                    id="login-mobile"
-                    type="tel"
-                    inputMode="numeric"
-                    maxLength={10}
-                    value={loginMobile}
-                    onChange={(event) => setLoginMobile(normalizeMobile(event.target.value))}
-                    placeholder="10-digit number"
-                  />
-                </div>
-
-                {loginOtpRequested && (
-                  <>
-                    <label className="auth-label" htmlFor="login-otp">Enter OTP</label>
-                    <input
-                      id="login-otp"
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={6}
-                      value={loginOtp}
-                      onChange={(event) => setLoginOtp(event.target.value.replace(/\D/g, '').slice(0, 6))}
-                      placeholder="6-digit OTP"
-                    />
-                  </>
-                )}
-
-                <div className="auth-action-row">
-                  {!loginOtpRequested ? (
-                    <button type="button" className="auth-cta" onClick={requestLoginOtp} disabled={authLoading}>
-                      {authLoading ? 'Sending OTP...' : 'Send OTP'}
-                    </button>
-                  ) : (
-                    <button type="button" className="auth-cta" onClick={verifyLoginOtp} disabled={authLoading}>
-                      {authLoading ? 'Verifying...' : 'Verify & Login'}
-                    </button>
-                  )}
-
-                  <button
-                    type="button"
-                    className="auth-switch"
-                    onClick={() => openAuthMode('signup')}
-                  >
-                    New user? Signup
-                  </button>
-                </div>
-
-                {showSignupOption && (
-                  <p className="auth-inline-note">
-                    User not found. Signup first to continue.
-                  </p>
-                )}
-              </div>
-            )}
-
-            {authMode === 'signup' && (
-              <div className="auth-form-grid">
-                <label className="auth-label" htmlFor="signup-name">Full Name</label>
-                <input
-                  id="signup-name"
-                  type="text"
-                  value={signupForm.name}
-                  onChange={(event) => setSignupForm((current) => ({ ...current, name: event.target.value }))}
-                  placeholder="Enter your full name"
-                />
-
-                <label className="auth-label" htmlFor="signup-mobile">Mobile Number</label>
-                <div className="mobile-input-wrap">
-                  <span>+91</span>
-                  <input
-                    id="signup-mobile"
-                    type="tel"
-                    inputMode="numeric"
-                    maxLength={10}
-                    value={signupForm.mobile}
-                    onChange={(event) => setSignupForm((current) => ({
-                      ...current,
-                      mobile: normalizeMobile(event.target.value),
-                    }))}
-                    placeholder="10-digit number"
-                  />
-                </div>
-
-                <label className="auth-label" htmlFor="signup-address">Address</label>
-                <textarea
-                  id="signup-address"
-                  rows={3}
-                  value={signupForm.address}
-                  onChange={(event) => setSignupForm((current) => ({ ...current, address: event.target.value }))}
-                  placeholder="Full address"
-                />
-
-                <label className="auth-label" htmlFor="signup-pincode">Pincode</label>
-                <input
-                  id="signup-pincode"
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={6}
-                  value={signupForm.pincode}
-                  onChange={(event) => setSignupForm((current) => ({
-                    ...current,
-                    pincode: event.target.value.replace(/\D/g, '').slice(0, 6),
-                  }))}
-                  placeholder="6-digit pincode"
-                />
-
-                {signupOtpRequested && (
-                  <>
-                    <label className="auth-label" htmlFor="signup-otp">Enter OTP</label>
-                    <input
-                      id="signup-otp"
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={6}
-                      value={signupOtp}
-                      onChange={(event) => setSignupOtp(event.target.value.replace(/\D/g, '').slice(0, 6))}
-                      placeholder="6-digit OTP"
-                    />
-                  </>
-                )}
-
-                <div className="auth-action-row">
-                  {!signupOtpRequested ? (
-                    <button type="button" className="auth-cta" onClick={requestSignupOtp} disabled={authLoading}>
-                      {authLoading ? 'Sending OTP...' : 'Send OTP'}
-                    </button>
-                  ) : (
-                    <button type="button" className="auth-cta" onClick={verifySignupOtp} disabled={authLoading}>
-                      {authLoading ? 'Verifying...' : 'Verify & Create Account'}
-                    </button>
-                  )}
-
-                  <button
-                    type="button"
-                    className="auth-switch"
-                    onClick={() => openAuthMode('login')}
-                  >
-                    Back to Login
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {authMode === 'profile' && authUser && (
-              <div className="profile-card">
-                <p><strong>Name:</strong> {authUser.name}</p>
-                <p><strong>Mobile:</strong> {authUser.mobile}</p>
-                <p><strong>Address:</strong> {authUser.address}</p>
-                <p><strong>Pincode:</strong> {authUser.pincode}</p>
-                <p className="profile-ok">Validated against MySQL user records.</p>
-                <button type="button" className="auth-cta danger" onClick={logoutUser}>Logout</button>
-              </div>
-            )}
-          </section>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div
       className="site-shell"
@@ -825,26 +634,6 @@ function App() {
               <span />
               <span />
             </button>
-
-            <div className="auth-controls">
-              <button
-                type="button"
-                className="auth-login-btn"
-                onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
-              >
-                {authUser ? 'My Account' : 'Login/Signup'}
-              </button>
-              <button
-                type="button"
-                className="profile-idle-btn"
-                aria-label="Profile"
-                onClick={() => openAuthMode(authUser ? 'profile' : 'login')}
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.3-8 5.1 0 .5.4.9.9.9h14.2c.5 0 .9-.4.9-.9 0-2.8-3.6-5.1-8-5.1Z" />
-                </svg>
-              </button>
-            </div>
           </div>
         </div>
 
@@ -1104,6 +893,18 @@ function App() {
           </div>
         </div>
       </div>
+
+      <a
+        className="floating-whatsapp"
+        href="https://wa.me/919926494791?text=Hello%2C%20I%20want%20to%20know%20more%20about%20NutriVerse%20products."
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with NutriVerse on WhatsApp"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M17.6 6.3C15.8 4.6 13.5 3.6 11 3.6 6.6 3.6 3 7.2 3 11.6c0 1.6.5 3.1 1.3 4.4L3 21l4.7-1.2c1.2.7 2.6 1.1 4.1 1.1 4.4 0 8-3.6 8-8s-3.6-8-8-8zm0 14.4c-1.1 0-2.2-.3-3.1-.8l-.2-.1-2.3.6.6-2.2-.2-.3c-.6-1-1-2.2-1-3.5 0-3.6 3-6.6 6.6-6.6 1.8 0 3.4.7 4.6 2 1.2 1.2 1.9 2.8 1.9 4.6 0 3.6-3 6.6-6.6 6.6zm3.2-4.9c-.2-.1-1-.5-1.2-.6-.2 0-.3 0-.5.1-.1.1-.5.6-.6.7-.1.1-.2.1-.4 0-.8-.4-1.5-.8-2.1-1.5-.2-.3.2-.3.6-1 .1-.1 0-.3 0-.4 0-.1-.4-.9-.6-1.3-.1-.3-.3-.3-.4-.3h-.4c-.1 0-.4.1-.6.3-.2.2-.7.7-.7 1.8 0 1 .7 2.1.8 2.2.1.2 1.5 2.4 3.8 3.2 1.5.6 2 .6 2.7.5.4 0 1-.4 1.2-.9.2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z" />
+        </svg>
+      </a>
     </div>
   )
 }
