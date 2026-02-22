@@ -626,6 +626,19 @@ button {
   transform: scale(0.96);
 }
 
+.carousel-arrow:disabled {
+  background: rgba(230, 187, 115, 0.08);
+  border-color: rgba(230, 187, 115, 0.15);
+  color: rgba(230, 187, 115, 0.3);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.carousel-arrow:disabled:hover {
+  background: rgba(230, 187, 115, 0.08);
+  transform: scale(1);
+}
+
 .quick-highlights,
 .product-grid,
 .pricing-grid,

@@ -61,6 +61,8 @@ function App() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
   const [loadedBackgrounds, setLoadedBackgrounds] = useState({})
   const [locationScrollPos, setLocationScrollPos] = useState(0)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
   const locationScrollContainerRef = useRef(null)
   const [authMode, setAuthMode] = useState('none')
   const [authStatus, setAuthStatus] = useState({ type: '', message: '' })
@@ -464,10 +466,40 @@ function App() {
       const container = locationScrollContainerRef.current
       const scrollAmount = 320 // card width + gap
       const newPos = locationScrollPos + (direction === 'left' ? -scrollAmount : scrollAmount)
-      container.scrollTo({ left: newPos, behavior: 'smooth' })
-      setLocationScrollPos(newPos)
+      
+      // Clamp to valid range
+      const maxScroll = container.scrollWidth - container.clientWidth
+      const clampedPos = Math.max(0, Math.min(newPos, maxScroll))
+      
+      container.scrollTo({ left: clampedPos, behavior: 'smooth' })
+      setLocationScrollPos(clampedPos)
+      
+      // Update arrow visibility based on scroll position
+      setCanScrollLeft(clampedPos > 0)
+      setCanScrollRight(clampedPos < maxScroll)
     }
   }
+
+  // Check arrow visibility on component mount and window resize
+  useEffect(() => {
+    const checkScrollability = () => {
+      if (locationScrollContainerRef.current) {
+        const container = locationScrollContainerRef.current
+        const maxScroll = container.scrollWidth - container.clientWidth
+        setCanScrollLeft(container.scrollLeft > 0)
+        setCanScrollRight(container.scrollLeft < maxScroll)
+      }
+    }
+    
+    // Small delay to ensure DOM is fully rendered
+    const timer = setTimeout(checkScrollability, 100)
+    window.addEventListener('resize', checkScrollability)
+    
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', checkScrollability)
+    }
+  }, [])
 
   const qualityPoints = [
     'Sourced from verified farms and import partners',
@@ -821,6 +853,7 @@ function App() {
           <button
             className="carousel-arrow carousel-arrow-left"
             onClick={() => handleLocationScroll('left')}
+            disabled={!canScrollLeft}
             aria-label="Scroll locations left"
           >
             ←
@@ -838,6 +871,7 @@ function App() {
           <button
             className="carousel-arrow carousel-arrow-right"
             onClick={() => handleLocationScroll('right')}
+            disabled={!canScrollRight}
             aria-label="Scroll locations right"
           >
             →
