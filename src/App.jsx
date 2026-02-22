@@ -464,7 +464,7 @@ function App() {
   const handleLocationScroll = (direction) => {
     if (locationScrollContainerRef.current) {
       const container = locationScrollContainerRef.current
-      const scrollAmount = 320 // card width + gap
+      const scrollAmount = 290 // Scroll one card at a time
       const newPos = locationScrollPos + (direction === 'left' ? -scrollAmount : scrollAmount)
       
       // Clamp to valid range
@@ -965,7 +965,7 @@ function App() {
         title="Chat on WhatsApp"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M19.07 4.56C17.76 3.25 15.96 2.5 13.99 2.5c-4.56 0-8.28 3.72-8.28 8.28 0 1.46.38 2.89 1.1 4.15L5.07 21.5l4.41-1.16c1.21.66 2.57 1.01 3.99 1.01 4.56 0 8.28-3.72 8.28-8.28 0-2.21-.89-4.32-2.49-5.91zm-4.93 10.51c-.21 0-.42-.01-.63-.04-1.13-.17-2.21-.65-3.05-1.35-.87-.72-1.41-1.7-1.41-2.76 0-2.23 1.81-4.04 4.04-4.04 1.08 0 2.1.43 2.86 1.19.75.75 1.19 1.77 1.19 2.85 0 2.23-1.81 4.04-4.04 4.04l.04.11z" />
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12h-8v-2h8v2zm0-3h-8V9h8v2zm0-3H6V6h12v2z" />
         </svg>
       </a>
     </div>
