@@ -252,7 +252,7 @@ body {
 }
 
 .section-gap {
-  margin-top: 0.85rem;
+  margin-top: 1.2rem;
   scroll-margin-top: 6rem;
 }
 
@@ -1119,7 +1119,7 @@ h2 {
   }
 
   .section-gap {
-    margin-top: 0.58rem;
+    margin-top: 1rem;
     scroll-margin-top: 4.4rem;
   }
 
@@ -1285,15 +1285,14 @@ h2 {
   }
 
   .service-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 0.45rem;
-    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.72rem;
+    padding: 0;
     margin-top: 0.55rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0;
+    border: none;
+    background: transparent;
   }
 
   .service-grid::-webkit-scrollbar {
@@ -1301,11 +1300,11 @@ h2 {
   }
 
   .service-card {
-    min-width: 118px;
-    width: 118px;
-    padding: 0.5rem;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.02);
+    min-width: auto;
+    width: auto;
+    padding: 0.82rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
   }
 
   .service-card h4 {
@@ -1439,6 +1438,8 @@ h2 {
   border: 2px solid rgba(255, 255, 255, 0.85);
   z-index: 999;
   transition: transform 180ms ease, box-shadow 180ms ease;
+  text-decoration: none;
+  pointer-events: auto;
 }
 
 .floating-whatsapp:hover {
