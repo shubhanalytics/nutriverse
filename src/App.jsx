@@ -536,22 +536,7 @@ function App() {
       note: 'Naturally sweet and delicious. Perfect for my health-conscious family. Highly satisfied with the order.',
     },
   ]
-  const [feedbackStartIndex, setFeedbackStartIndex] = useState(0)
-  const feedbacksPerView = 4
-
-  const handlePrevFeedback = () => {
-    setFeedbackStartIndex((current) => 
-      current === 0 ? Math.max(0, customerFeedback.length - feedbacksPerView) : current - 1
-    )
-  }
-
-  const handleNextFeedback = () => {
-    setFeedbackStartIndex((current) => 
-      current + feedbacksPerView >= customerFeedback.length ? 0 : current + 1
-    )
-  }
-
-  const visibleFeedbacks = customerFeedback.slice(feedbackStartIndex, feedbackStartIndex + feedbacksPerView)
+  const feedbackLoop = [...customerFeedback, ...customerFeedback]
 
   const serviceHighlights = [
     {
@@ -1077,22 +1062,18 @@ function App() {
               <h2>Positive Ratings Across Products and Services</h2>
             </div>
             <div className="feedback-slider-container">
-              <button className="slider-arrow left" onClick={handlePrevFeedback} aria-label="Previous feedback">
-                ❮
-              </button>
-              <div className="feedback-grid-slider">
-                {visibleFeedbacks.map((item) => (
-                  <article className="card feedback-card" key={item.name}>
-                    <h4>{item.product}</h4>
-                    <p className="customer-name">— {item.name}</p>
-                    <p className="stars">{'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}</p>
-                    <p className="feedback-note">{item.note}</p>
-                  </article>
-                ))}
+              <div className="feedback-slider-viewport" aria-label="Customer feedback carousel">
+                <div className="feedback-slider-track">
+                  {feedbackLoop.map((item, index) => (
+                    <article className="card feedback-card" key={`${item.name}-${index}`}>
+                      <h4>{item.product}</h4>
+                      <p className="customer-name">— {item.name}</p>
+                      <p className="stars">{'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}</p>
+                      <p className="feedback-note">{item.note}</p>
+                    </article>
+                  ))}
+                </div>
               </div>
-              <button className="slider-arrow right" onClick={handleNextFeedback} aria-label="Next feedback">
-                ❯
-              </button>
             </div>
           </section>
 
@@ -1114,7 +1095,6 @@ function App() {
 
         <div className="copyright-section">
           <p>&copy; 2026 NutriVerse. All rights reserved.</p>
-          <p>Delivering premium dryfruits & nuts with excellence since 2023.</p>
           <div className="footer-links">
             <a href="#">Privacy Policy</a>
             <span className="divider">•</span>
