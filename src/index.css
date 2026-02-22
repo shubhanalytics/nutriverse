@@ -27,7 +27,7 @@ body {
 .site-shell {
   min-height: 100vh;
   background-size: cover;
-  background-position: center;
+  background-position: var(--section-bg-pos, center);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-color: #13120f;
@@ -400,9 +400,9 @@ body {
 .hero-inner {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: 1.4rem;
-  align-items: stretch;
+  align-items: center;
   min-height: 100%;
 }
 
@@ -412,9 +412,72 @@ body {
   background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.18));
 }
 
+.hero-float-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.floating-fruit {
+  position: absolute;
+  width: clamp(72px, 10vw, 120px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.26);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+  filter: saturate(1.08);
+  animation: floatFruit 6.8s ease-in-out infinite;
+}
+
+.fruit-1 {
+  top: 7%;
+  right: 7%;
+  animation-delay: 0s;
+}
+
+.fruit-2 {
+  top: 63%;
+  right: 43%;
+  animation-delay: 0.8s;
+}
+
+.fruit-3 {
+  top: 16%;
+  right: 33%;
+  animation-delay: 1.4s;
+}
+
+.fruit-4 {
+  bottom: 8%;
+  right: 16%;
+  animation-delay: 2.1s;
+}
+
+@keyframes floatFruit {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) scale(1.03);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
 .hero-content {
   position: relative;
+  z-index: 2;
+  justify-self: start;
   max-width: 100%;
+  padding: 1rem 1.15rem 1.2rem;
+  border-radius: 18px;
+  background: rgba(19, 18, 15, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(3px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -422,6 +485,9 @@ body {
 
 .hero-showcase {
   position: relative;
+  z-index: 2;
+  justify-self: end;
+  max-width: 420px;
   display: grid;
   gap: 0.85rem;
 }
@@ -855,6 +921,26 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .hero-content {
+    max-width: 100%;
+    padding: 0.9rem 0.95rem 1.05rem;
+  }
+
+  .hero-showcase {
+    justify-self: stretch;
+    max-width: 100%;
+  }
+
+  .floating-fruit {
+    width: clamp(62px, 16vw, 90px);
+    opacity: 0.84;
+  }
+
+  .fruit-3,
+  .fruit-4 {
+    display: none;
+  }
+
   .quick-highlights,
   .product-grid,
   .pricing-grid,
@@ -867,6 +953,10 @@ h2 {
 }
 
 @media (max-width: 700px) {
+  .site-shell {
+    background-position: var(--section-bg-pos-mobile, var(--section-bg-pos, center));
+  }
+
   .top-row {
     flex-direction: column;
     align-items: center;
@@ -903,6 +993,10 @@ h2 {
 
   .bulk-actions {
     flex-direction: column;
+  }
+
+  .hero-float-layer {
+    display: none;
   }
 }
 

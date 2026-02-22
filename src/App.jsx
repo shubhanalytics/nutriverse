@@ -1,19 +1,36 @@
 import { useEffect, useState } from 'react'
 import './index.css'
 
-const dryfruitsImage = 'https://images.unsplash.com/photo-1585518419759-85920db65c1a?auto=format&fit=crop&w=1920&q=90'
+const ASSET_BASE = import.meta.env.BASE_URL
 
 const sectionBackgrounds = {
-  home: dryfruitsImage,
-  'about-us': dryfruitsImage,
-  products: dryfruitsImage,
-  'bulk-order': dryfruitsImage,
-  locations: dryfruitsImage,
-  'contact-us': dryfruitsImage,
+  home: `${ASSET_BASE}assets/bg-new.jpg`,
+  'about-us': `${ASSET_BASE}assets/image-1.jpg`,
+  products: `${ASSET_BASE}assets/image-1.jpg`,
+  'bulk-order': `${ASSET_BASE}assets/bg-new.jpg`,
+  locations: `${ASSET_BASE}assets/image-1.jpg`,
+  'contact-us': `${ASSET_BASE}assets/bg-new.jpg`,
+}
+
+const sectionBackgroundPositions = {
+  home: 'center 22%',
+  'about-us': 'center 35%',
+  products: 'center 40%',
+  'bulk-order': 'center 24%',
+  locations: 'center 36%',
+  'contact-us': 'center 30%',
+}
+
+const sectionBackgroundPositionsMobile = {
+  home: 'center 28%',
+  'about-us': 'center 22%',
+  products: 'center 26%',
+  'bulk-order': 'center 30%',
+  locations: 'center 24%',
+  'contact-us': 'center 30%',
 }
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
-const ASSET_BASE = import.meta.env.BASE_URL
 const hashToAuthMode = {
   '#/login': 'login',
   '#/signup': 'signup',
@@ -569,7 +586,16 @@ function App() {
     },
   ]
 
+  const homeFloatingDryfruits = [
+    { name: 'Almonds', image: `${ASSET_BASE}assets/almonds.jpg` },
+    { name: 'Cashews', image: `${ASSET_BASE}assets/cashews.jpg` },
+    { name: 'Pistachios', image: `${ASSET_BASE}assets/pistachios.jpg` },
+    { name: 'Walnuts', image: `${ASSET_BASE}assets/walnuts.jpg` },
+  ]
+
   const activeBackground = sectionBackgrounds[activeSection] || sectionBackgrounds.home
+  const activeBackgroundPosition = sectionBackgroundPositions[activeSection] || sectionBackgroundPositions.home
+  const activeBackgroundPositionMobile = sectionBackgroundPositionsMobile[activeSection] || sectionBackgroundPositionsMobile.home
   const backgroundStyle = loadedBackgrounds[activeSection]
     ? `linear-gradient(120deg, rgba(15, 12, 8, 0.86), rgba(34, 26, 15, 0.68)), url(${activeBackground})`
     : 'linear-gradient(120deg, rgba(15, 12, 8, 0.92), rgba(34, 26, 15, 0.8))'
@@ -580,6 +606,8 @@ function App() {
         className="site-shell"
         style={{
           backgroundImage: backgroundStyle,
+          '--section-bg-pos': activeBackgroundPosition,
+          '--section-bg-pos-mobile': activeBackgroundPositionMobile,
           backgroundColor: '#13120f',
         }}
       >
@@ -768,6 +796,8 @@ function App() {
       className="site-shell"
       style={{
         backgroundImage: backgroundStyle,
+        '--section-bg-pos': activeBackgroundPosition,
+        '--section-bg-pos-mobile': activeBackgroundPositionMobile,
         backgroundColor: '#13120f',
       }}
     >
@@ -819,6 +849,17 @@ function App() {
 
         <header className="hero" id="home">
           <div className="overlay" />
+          <div className="hero-float-layer" aria-hidden="true">
+            {homeFloatingDryfruits.map((item, index) => (
+              <img
+                key={item.name}
+                className={`floating-fruit fruit-${index + 1}`}
+                src={item.image}
+                alt=""
+                loading="lazy"
+              />
+            ))}
+          </div>
           <div className="hero-inner">
             <div className="hero-content">
               <p className="eyebrow">NutriVerse · Premium Dryfruits</p>
