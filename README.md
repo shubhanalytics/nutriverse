@@ -26,6 +26,10 @@ A modern, responsive e-commerce website for premium dryfruits including almonds,
 	- `MYSQL_DATABASE`
 3. Set `JWT_SECRET` to a strong secret key
 4. For OTP in development use `SMS_PROVIDER=mock` (OTP appears in backend console)
+5. For real OTP delivery set `SMS_PROVIDER=twilio` and configure:
+	- `TWILIO_ACCOUNT_SID`
+	- `TWILIO_AUTH_TOKEN`
+	- `TWILIO_FROM_NUMBER`
 5. Start app and backend together:
 
 ```bash
@@ -48,14 +52,14 @@ OTP data is stored in table `otp_codes` with expiry for signup/login verificatio
 
 ## SMS Provider Integration (Production)
 
-To send real OTP to mobile phones, integrate your SMS provider in `server/services/smsService.js`.
-Typical provider details needed:
-- Provider name (MSG91/Twilio/etc.)
-- API key / auth token
-- Sender ID / template ID (if required)
-- Route/flow configuration approved for OTP
+Real OTP sending is implemented with Twilio in `server/services/smsService.js`.
 
-Current setup uses mock mode by default so you can test the complete flow immediately.
+- Development: `SMS_PROVIDER=mock` (OTP printed in backend logs)
+- Production: `SMS_PROVIDER=twilio` with valid Twilio credentials
+
+Important behavior:
+- Login/Signup OTP is saved only after SMS delivery succeeds
+- If SMS delivery fails, API returns error and login is blocked until OTP is delivered
 
 ## React Compiler
 

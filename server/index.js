@@ -64,17 +64,16 @@ function normalizeIndianMobile(rawMobile) {
   return null
 }
 
-async function createOtp({ mobile, purpose, payload = null }) {
-  const otp = generateOtp()
+async function createOtp({ mobile, purpose, payload = null, otp = generateOtp() }) {
   const expiresAt = new Date(Date.now() + otpTtlMinutes * 60 * 1000)
 
-  await pool.query(
+  const [result] = await pool.query(
     `INSERT INTO otp_codes (mobile, otp, purpose, payload_json, expires_at)
      VALUES (?, ?, ?, ?, ?)`,
     [mobile, otp, purpose, payload ? JSON.stringify(payload) : null, expiresAt],
   )
 
-  return otp
+  return { id: result.insertId, otp }
 }
 
 async function getLatestValidOtp({ mobile, purpose }) {
@@ -131,8 +130,14 @@ app.post('/api/auth/signup/request-otp', async (req, res) => {
     }
 
     const payload = { name, address, pincode }
-    const otp = await createOtp({ mobile, purpose: 'signup', payload })
-    const smsResult = await sendOtpSms({ mobile, otp, context: 'signup' })
+    const generatedOtp = generateOtp()
+    const smsResult = await sendOtpSms({ mobile, otp: generatedOtp, context: 'signup' })
+
+    if (!smsResult.ok) {
+      return res.status(502).json({ message: 'Unable to deliver OTP right now. Please try again shortly.' })
+    }
+
+    const { otp } = await createOtp({ mobile, purpose: 'signup', payload, otp: generatedOtp })
 
     res.json({
       message: 'OTP sent for signup verification.',
@@ -190,8 +195,14 @@ app.post('/api/auth/login/request-otp', async (req, res) => {
       return res.status(404).json({ message: 'User not found.', showSignup: true })
     }
 
-    const otp = await createOtp({ mobile, purpose: 'login' })
-    const smsResult = await sendOtpSms({ mobile, otp, context: 'login' })
+    const generatedOtp = generateOtp()
+    const smsResult = await sendOtpSms({ mobile, otp: generatedOtp, context: 'login' })
+
+    if (!smsResult.ok) {
+      return res.status(502).json({ message: 'Unable to deliver OTP right now. Please try again shortly.' })
+    }
+
+    const { otp } = await createOtp({ mobile, purpose: 'login', otp: generatedOtp })
 
     res.json({
       message: 'OTP sent for login.',
