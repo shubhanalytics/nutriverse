@@ -235,21 +235,31 @@ function App() {
   const [activeSection, setActiveSection] = useState('home')
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
   const [loadedBackgrounds, setLoadedBackgrounds] = useState({})
-  const [locationScrollPos, setLocationScrollPos] = useState(0)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
   const locationScrollContainerRef = useRef(null)
 
-  const getLocationScrollStep = (container) => {
-    const firstCard = container.querySelector('.card')
-    if (!firstCard) {
-      return container.clientWidth
+  const getLocationCards = (container) => Array.from(container.querySelectorAll('.card'))
+
+  const getNearestLocationIndex = (container) => {
+    const cards = getLocationCards(container)
+    if (cards.length === 0) {
+      return 0
     }
 
-    const computedStyle = window.getComputedStyle(container)
-    const gapValue = parseFloat(computedStyle.columnGap || computedStyle.gap || '0')
-    const safeGap = Number.isNaN(gapValue) ? 0 : gapValue
-    return firstCard.getBoundingClientRect().width + safeGap
+    const currentLeft = container.scrollLeft
+    let nearestIndex = 0
+    let smallestDelta = Number.POSITIVE_INFINITY
+
+    cards.forEach((card, index) => {
+      const delta = Math.abs(card.offsetLeft - currentLeft)
+      if (delta < smallestDelta) {
+        smallestDelta = delta
+        nearestIndex = index
+      }
+    })
+
+    return nearestIndex
   }
 
   useEffect(() => {
@@ -271,7 +281,6 @@ function App() {
         const container = locationScrollContainerRef.current
         const currentScroll = Math.round(container.scrollLeft)
         const maxScroll = container.scrollWidth - container.clientWidth
-        setLocationScrollPos(currentScroll)
         setCanScrollLeft(currentScroll > 2)
         setCanScrollRight(currentScroll < maxScroll - 2)
       }
@@ -308,15 +317,15 @@ function App() {
   const handleLocationScroll = (direction) => {
     if (locationScrollContainerRef.current) {
       const container = locationScrollContainerRef.current
-      const scrollStep = getLocationScrollStep(container)
+      const cards = getLocationCards(container)
       const maxScroll = container.scrollWidth - container.clientWidth
-      const currentIndex = scrollStep > 0 ? Math.round(locationScrollPos / scrollStep) : 0
+      const currentIndex = getNearestLocationIndex(container)
       const nextIndex = direction === 'left' ? currentIndex - 1 : currentIndex + 1
-      const targetPos = nextIndex * scrollStep
+      const clampedIndex = Math.max(0, Math.min(nextIndex, cards.length - 1))
+      const targetPos = cards[clampedIndex]?.offsetLeft ?? 0
       const clampedPos = Math.max(0, Math.min(targetPos, maxScroll))
 
       container.scrollTo({ left: clampedPos, behavior: 'smooth' })
-      setLocationScrollPos(clampedPos)
       setCanScrollLeft(clampedPos > 0)
       setCanScrollRight(clampedPos < maxScroll)
     }
