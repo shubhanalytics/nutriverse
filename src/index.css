@@ -486,7 +486,8 @@ button {
 .feedback-card {
   display: flex;
   flex-direction: column;
-  min-height: 280px;
+  min-height: 240px;
+  height: 240px;
 }
 
 h3,
@@ -636,11 +637,14 @@ h2 {
 }
 
 .feedback-note {
-  margin: 0.7rem 0 0 0;
+  margin: 0.55rem 0 0 0;
   color: #efe6d8;
   font-size: 0.98rem;
   line-height: 1.6;
-  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 .site-footer {
@@ -943,6 +947,7 @@ h2 {
 
   .feedback-card {
     min-height: 0;
+    height: auto;
   }
 
   .feedback-slider-container {
