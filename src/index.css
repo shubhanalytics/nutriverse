@@ -1041,6 +1041,18 @@ h2 {
   .hero-float-layer {
     display: none;
   }
+
+  .floating-whatsapp {
+    width: 52px;
+    height: 52px;
+    right: 0.8rem;
+    bottom: 0.8rem;
+  }
+
+  .floating-whatsapp svg {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1167,18 +1179,4 @@ h2 {
   width: 27px;
   height: 27px;
   fill: currentColor;
-}
-
-@media (max-width: 700px) {
-  .floating-whatsapp {
-    width: 52px;
-    height: 52px;
-    right: 0.8rem;
-    bottom: 0.8rem;
-  }
-
-  .floating-whatsapp svg {
-    width: 24px;
-    height: 24px;
-  }
 }
