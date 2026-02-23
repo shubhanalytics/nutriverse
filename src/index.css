@@ -998,8 +998,10 @@ h2 {
   }
 
   .location-grid .card {
-    min-width: 260px;
-    width: 260px;
+    flex: 0 0 calc(100% - 1rem);
+    width: calc(100% - 1rem);
+    min-width: calc(100% - 1rem);
+    min-height: 170px;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
@@ -1123,8 +1125,10 @@ h2 {
   }
 
   .location-grid .card {
-    min-width: 220px;
-    width: 220px;
+    flex: 0 0 calc(100% - 0.8rem);
+    width: calc(100% - 0.8rem);
+    min-width: calc(100% - 0.8rem);
+    min-height: 160px;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
