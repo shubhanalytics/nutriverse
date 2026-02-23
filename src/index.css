@@ -696,6 +696,15 @@ button {
   padding: 0 1.1rem;
 }
 
+.product-highlights {
+  margin: 0.75rem 0 1.1rem;
+  padding: 0 1.1rem 0 2rem;
+  color: #f2e7d7;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
 .product-card h4 {
   margin-top: 1rem;
 }
@@ -795,6 +804,37 @@ h2 {
   color: #f1e7d8;
   display: grid;
   gap: 0.55rem;
+}
+
+.faq-section {
+  border-radius: 24px;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 0.9rem;
+}
+
+.faq-item {
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.faq-item h4 {
+  margin: 0;
+  color: #fff2d4;
+}
+
+.faq-item p {
+  margin: 0.55rem 0 0;
+  color: #e9ddce;
 }
 
 .price {
@@ -1199,6 +1239,7 @@ h2 {
 
   .about-section,
   .quality,
+  .faq-section,
   .contact-card,
   .bulk-contact-card,
   .quick-highlights article,
@@ -1211,6 +1252,7 @@ h2 {
 
   .quick-highlights,
   .product-grid,
+  .faq-grid,
   .location-grid,
   .feedback-grid,
   .service-grid {
@@ -1226,6 +1268,12 @@ h2 {
   .product-card p,
   .product-card .shop-controls {
     padding: 0 0.82rem;
+  }
+
+  .product-highlights {
+    padding: 0 0.82rem 0 1.7rem;
+    margin: 0.6rem 0 0.85rem;
+    font-size: 0.84rem;
   }
 
   .shop-controls {
@@ -1262,6 +1310,7 @@ h2 {
 
   .quick-highlights,
   .product-grid,
+  .faq-grid,
   .pricing-grid,
   .location-grid,
   .feedback-grid,

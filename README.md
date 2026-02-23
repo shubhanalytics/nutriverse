@@ -1,66 +1,47 @@
-# NutriVerse - Premium Dryfruits Website
+# NutriVerse Website (Informative-Only)
 
-**Live Website:** https://shubhanalytics.github.io/nutriverse/
+Live Website: https://shubhanalytics.github.io/nutriverse/
 
-A modern, responsive e-commerce website for premium dryfruits including almonds, cashews, walnuts, pistachios, and custom gift boxes.
+NutriVerse is a responsive, informative-only website for showcasing dryfruit products, quality standards, store locations, and contact details.
 
-## Features
+## Website Intent
 
-- Sticky navigation with smooth tab-based scrolling
-- Dynamic product pricing with quantity selection
-- Bulk order contact section with WhatsApp integration
-- OTP-based Login and Signup with MySQL user storage
-- User profile validation against database records
-- Service highlights with icons
-- GitHub Pages deployment
-- Built with React + Vite for fast performance
+- Informative browsing only (no online checkout)
+- Product discovery and trust building
+- WhatsApp-first communication for enquiries and purchase discussion
 
-## Auth + MySQL Setup
+## Key Features
 
-1. Copy `.env.example` to `.env`
-2. Fill these required MySQL details:
-	- `MYSQL_HOST`
-	- `MYSQL_PORT`
-	- `MYSQL_USER`
-	- `MYSQL_PASSWORD`
-	- `MYSQL_DATABASE`
-3. Set `JWT_SECRET` to a strong secret key
-4. For OTP in development use `SMS_PROVIDER=mock` (OTP appears in backend console)
-5. Start app and backend together:
+- Sticky section-based navigation with smooth scrolling
+- Hero section with clear "informative-only" messaging
+- Product catalog cards with highlights (no cart/order flow)
+- Quality assurance section
+- Store locations carousel
+- Contact section + floating WhatsApp CTA
+- Customer feedback and service promise blocks
+
+## Run Frontend
+
+```bash
+npm install
+npm run dev
+```
+
+Frontend URL: http://localhost:5173
+
+## Optional Backend (Not Required for Current Website UX)
+
+A backend exists in `server/` for OTP auth experiments, but it is not required for the current informative-only website.
+
+Run both frontend and backend if needed:
 
 ```bash
 npm run dev:full
 ```
 
-Frontend: `http://localhost:5173`  
-Backend: `http://localhost:5000`
+## Suggested Production Configuration
 
-## What gets stored in MySQL
-
-On signup, these fields are saved automatically in table `users`:
-- `name`
-- `mobile` (`+91` + 10 digits)
-- `address`
-- `pincode`
-- `created_at`
-
-OTP data is stored in table `otp_codes` with expiry for signup/login verification.
-
-## SMS Provider Integration (Production)
-
-To send real OTP to mobile phones, integrate your SMS provider in `server/services/smsService.js`.
-Typical provider details needed:
-- Provider name (MSG91/Twilio/etc.)
-- API key / auth token
-- Sender ID / template ID (if required)
-- Route/flow configuration approved for OTP
-
-Current setup uses mock mode by default so you can test the complete flow immediately.
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Keep WhatsApp number updated in `src/App.jsx`
+- Replace placeholder phone/email/address with final business details
+- Add working links for Privacy Policy and Terms pages
+- Keep product photos optimized in `public/assets/`
