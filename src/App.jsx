@@ -240,6 +240,18 @@ function App() {
   const [canScrollRight, setCanScrollRight] = useState(true)
   const locationScrollContainerRef = useRef(null)
 
+  const getLocationScrollStep = (container) => {
+    const firstCard = container.querySelector('.card')
+    if (!firstCard) {
+      return container.clientWidth
+    }
+
+    const computedStyle = window.getComputedStyle(container)
+    const gapValue = parseFloat(computedStyle.columnGap || computedStyle.gap || '0')
+    const safeGap = Number.isNaN(gapValue) ? 0 : gapValue
+    return firstCard.getBoundingClientRect().width + safeGap
+  }
+
   useEffect(() => {
     Object.entries(sectionBackgrounds).forEach(([key, url]) => {
       const image = new Image()
@@ -257,17 +269,22 @@ function App() {
     const checkScrollability = () => {
       if (locationScrollContainerRef.current) {
         const container = locationScrollContainerRef.current
+        const currentScroll = Math.round(container.scrollLeft)
         const maxScroll = container.scrollWidth - container.clientWidth
-        setCanScrollLeft(container.scrollLeft > 0)
-        setCanScrollRight(container.scrollLeft < maxScroll)
+        setLocationScrollPos(currentScroll)
+        setCanScrollLeft(currentScroll > 2)
+        setCanScrollRight(currentScroll < maxScroll - 2)
       }
     }
 
+    const container = locationScrollContainerRef.current
     const timer = setTimeout(checkScrollability, 100)
+    container?.addEventListener('scroll', checkScrollability, { passive: true })
     window.addEventListener('resize', checkScrollability)
 
     return () => {
       clearTimeout(timer)
+      container?.removeEventListener('scroll', checkScrollability)
       window.removeEventListener('resize', checkScrollability)
     }
   }, [])
@@ -291,10 +308,12 @@ function App() {
   const handleLocationScroll = (direction) => {
     if (locationScrollContainerRef.current) {
       const container = locationScrollContainerRef.current
-      const scrollAmount = 290
-      const newPos = locationScrollPos + (direction === 'left' ? -scrollAmount : scrollAmount)
+      const scrollStep = getLocationScrollStep(container)
       const maxScroll = container.scrollWidth - container.clientWidth
-      const clampedPos = Math.max(0, Math.min(newPos, maxScroll))
+      const currentIndex = scrollStep > 0 ? Math.round(locationScrollPos / scrollStep) : 0
+      const nextIndex = direction === 'left' ? currentIndex - 1 : currentIndex + 1
+      const targetPos = nextIndex * scrollStep
+      const clampedPos = Math.max(0, Math.min(targetPos, maxScroll))
 
       container.scrollTo({ left: clampedPos, behavior: 'smooth' })
       setLocationScrollPos(clampedPos)
