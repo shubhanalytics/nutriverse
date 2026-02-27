@@ -416,9 +416,6 @@ function App() {
                 <button className="primary" type="button" onClick={() => goToSection('products')}>
                   View Products
                 </button>
-                <a className="action-link whatsapp-link" href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                  WhatsApp Us
-                </a>
               </div>
             </div>
 

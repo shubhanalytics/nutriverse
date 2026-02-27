@@ -216,8 +216,8 @@ body {
   position: relative;
   border-radius: 28px;
   overflow: hidden;
-  min-height: 560px;
-  padding: 3.2rem;
+  min-height: 480px;
+  padding: 2.2rem;
   background-image: linear-gradient(120deg, rgba(15, 12, 8, 0.74), rgba(34, 26, 15, 0.46));
   background-size: cover;
   background-position: center;
@@ -358,7 +358,7 @@ h1 {
 }
 
 .hero-actions {
-  margin-top: 1.6rem;
+  margin-top: 0.9rem;
   display: flex;
   gap: 0.9rem;
   flex-wrap: wrap;
